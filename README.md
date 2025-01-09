@@ -18,5 +18,40 @@ Make a clear list of features that work/dont work
 
 ## Adventurer Subclasses
 
-replace this with your documentation for your two Adventurer subclasses. If you modify or replace the provided CodeWarrior class, please provide documentation for that as well.
+### NYU Exchange Student
+Base Health: 25
+
+Max Health: 30
+
+Base Special (money): 5
+
+Max Special: 10
+
+#### Abilities
+- Attack
+  - Description: The exchange student flaunts his bank account, rendering the opponent immobile for the next 2 rounds.
+  - Consumes 1 daddy’s money.
+- Ally Support
+  - Description: The exchange student generously shares his money with everyone, boosting their special by 1 and health by 3.
+  - Consumes 2 daddy’s money.
+- Self Support
+  - Description: The exchange student receives his weekly $10,000 deposit from his dad, boosting his health by 4.
+  - Consumes 1 daddy’s money, but can only be used if daddy’s money is less than 3.
+
+### Unpaid CS Intern
+Base Health: 20
+
+Max Health: 25
+
+Base Special (work experience): 9
+
+Max Special: 15
+
+#### Abilities
+- Attack
+  - Description: The unpaid intern shows their superior resume, shocking the opponent and dealing 4 points of damage.
+  - Consumes 2 work experience
+- Buff self: 
+  - Description: The CS Intern locks in, boosting its damage by 1.3x for the next 2 rounds.
+  - Consumes 3 work experience.
 
