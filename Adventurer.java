@@ -1,5 +1,6 @@
 import java.util.Random;
 public abstract class Adventurer{
+  private int paralyzedDuration;
   private String name;
   private int HP,maxHP;
 
@@ -88,9 +89,15 @@ public abstract class Adventurer{
   public int getmaxHP(){
     return maxHP;
   }
+
+  public int getParalyzedD() {
+    return paralyzedDuration;
+  }
+
   public void setmaxHP(int newMax){
     maxHP = newMax;
   }
+  
 
   //Set Methods
   public void setHP(int health){
@@ -100,4 +107,13 @@ public abstract class Adventurer{
   public void setName(String s){
     this.name = s;
   }
+
+  public void setParalyzedD(int n) {
+    this.paralyzedDuration = n;
+  }
+
+  public boolean isParalyzed() {
+    return getParalyzedD() > 0;
+  }
+
 }
