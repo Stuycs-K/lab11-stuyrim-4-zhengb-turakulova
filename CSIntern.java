@@ -33,32 +33,51 @@ public class CSIntern extends Adventurer {
         " points of damage. They then pick up the (1) money " + other + "dropped";
       }
     
-    
+      //4 points of damage. Consumes 2 work experience
       public String specialAttack(Adventurer other){
-        if(getSpecial() >= 1){
-          setSpecial(getSpecial()-1); // consumes 1 daddy's money
-          int duration = (int)(Math.random()*2) + 1; // paralyzes the opponent for the next 1-2 rounds
-    
-          other.setParalyzedD(duration);
-          return this + " flaunts their bank account, causing the opponent to fall into a depression for the next "
-          + duration + " rounds";
+        if(this.getSpecial() > 1){
+          int damage = 4;
+          other.setHP(other.getHP() - damage);
+		  this.setSpecial(this.getSpecial()-2); // consumes 1 work experience
+          return this + " shows " + other + " their superior resume, dealing "
+          + damage + " damage";
         }
         else{
           return "Not enough money to use special attack. Instead "+attack(other);
         }
     
       }
-      // 
+	  
+      // restores 1 special and 2 health for 2 work experience
       public String support(Adventurer other){
-        return "Gives a coffee to "+other+" and restores "
-        + other.restoreSpecial(5)+" "+other.getSpecialName();
+		if(this.getSpecial() > 1){
+			int hp = 2;
+			if(other.getHP() + hp > other.getMaxHP()){
+				hp = other.getMaxHP() - other.getHP();
+			}
+			other.setHP(hp);
+			this.setSpecial(this.getSpecial() - 2);
+			return this + " advises "+other+" to avoid unpaid internships and restores " 
+			+ other.restoreSpecial(1)+" "+other.getSpecialName() + " and " + hp + " HP";
+		 }else{
+		 return "Not enough " + this.getSpecialName() + " to support ally";
+		 }
       }
-      /*Restores 6 special and 1 hp to self.*/
+	  
+      /*uses 3 work experience: adds buffedD for 2 rounds Restores 2 hp to self, only hp if insufficient experience.*/
       public String support(){
-        int hp = 1;
+		int hp = 2;
+		if(getHP() + hp > getMaxHP()){
+			hp = getMaxHP() - getHP();
+		}
         setHP(getHP()+hp);
-        this.setSpecial(getSpecial() - 3);
-        return this+ " locks in, boosting its damage by 1.3x for the next 2 rounds and  "+restoreSpecial(6)+" "
-        + getSpecialName()+ " and "+hp+" HP"; //should we make another field for "buffed" in adventurer or just this one
-      }
+		if(getSpecial() > 1){
+			setBuffedD(getBuffedD() + 2);
+			setSpecial(getSpecial() - 2);
+			return this + " locks in, boosts their damage by 1.3x for the next 2 rounds, and restores "+hp+" HP"; //should we make another field for "buffed" in adventurer or just this one
+		}else{
+			return this + " doesn't have enough " + getSpecialName() + " to buff, instead just restore " + hp + " HP"; 
+		}
+	  }
+	  
 }

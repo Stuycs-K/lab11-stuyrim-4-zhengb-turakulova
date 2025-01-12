@@ -51,11 +51,11 @@ Max Special: 15
 - Attack
   - Description: The unpaid intern shows their superior resume, shocking the opponent and dealing 4 points of damage.
   - Consumes 2 work experience
-- Buff self: 
-  - Description: The CS Intern locks in, boosting its damage by 1.3x for the next 2 rounds. 
-  - Restores 1 experience and 3 health.
-- Buff other:
-  - Desc: CS Intern advises ally to avoid unpaid internships
-  -
+- Self Support
+  - Description: The CS Intern locks in, boosting its damage by 1.3x for the next 2 rounds. Restores 2 health.
+  - Consumes 3 work experience, if insufficient just restore 2 HP.
+- Ally Support
+  - Description: CS Intern advises ally to avoid unpaid internships and restores 1 special and 2 health
+  - Consumes 2 work experience
 
 
