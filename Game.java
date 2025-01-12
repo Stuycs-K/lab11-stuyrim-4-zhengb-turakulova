@@ -1,20 +1,35 @@
 import java.util.*;
-public class Game{
+public class Game{  
   private static final int WIDTH = 80;
   private static final int HEIGHT = 30;
   private static final int BORDER_COLOR = Text.BLACK;
   private static final int BORDER_BACKGROUND = Text.WHITE + Text.BACKGROUND;
 
   public static void main(String[] args) {
-    run();
+    drawBackground();
+    // run();
   }
 
   //Display the borders of your screen that will not change.
   //Do not write over the blank areas where text will appear or parties will appear.
   public static void drawBackground(){
-    /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-    //YOUR CODE HERE
-    /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    for (int x = 1; x <= WIDTH; x++) {
+      String whatDraw;
+      if (x==1 || x==WIDTH) whatDraw = "+";
+      else whatDraw = "=";
+
+      Text.go(1, x);
+      System.out.print(whatDraw);
+      Text.go(WIDTH, x);
+      System.out.print(whatDraw);
+    }
+
+    for (int y = 2; y < HEIGHT; y++) {
+      Text.go(y, 1);
+      System.out.print("|");
+      Text.go(y, WIDTH);
+      System.out.print("|");
+    }
   }
 
   //Display a line of text starting at

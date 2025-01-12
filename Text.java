@@ -44,7 +44,7 @@ public class Text{
 
   /* Go to line and print30x80*/
   public static void printAt(String text, int row, int col){
-    g(row, col);
+    go(row, col);
     System.out.print(text);
   }
 

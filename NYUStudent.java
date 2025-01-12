@@ -3,7 +3,7 @@ public class NYUStudent extends Adventurer{
 
   public NYUStudent(String name, int hp) {
     super(name, hp);
-    setmaxHP(hp / 2);
+    setmaxHP(30);
     
     moneyMax = 10;
     money = moneyMax / 2;
@@ -27,28 +27,29 @@ public class NYUStudent extends Adventurer{
   }
 
   public String attack(Adventurer other){
-    int damage = (int)(Math.random()*2)+1;
+    int damage = (int)(Math.random()*2)+1; // 1 to 2 damage
     other.applyDamage(damage);
-    restoreSpecial(1);
+    restoreSpecial(1); // psasively restore 1 special
     return this + " attacked "+ other + " and dealt "+ damage +
-    " points of damage. They then pick up the money " + other + "dropped";
+    " points of damage. They then pick up the (1) money " + other + "dropped";
   }
 
 
   public String specialAttack(Adventurer other){
     if(getSpecial() >= 1){
-      setSpecial(getSpecial()-1);
-      int duration = (int)(Math.random()*3) + 1;
+      setSpecial(getSpecial()-1); // consumes 1 daddy's money
+      int duration = (int)(Math.random()*2) + 1; // paralyzes the opponent for the next 1-2 rounds
 
       other.setParalyzedD(duration);
-      return this + " flaunts their bank account, rendering the opponent immobile for the next "
+      return this + " flaunts their bank account, causing the opponent to fall into a depression for the next "
       + duration + " rounds";
-    }else{
+    }
+    else{
       return "Not enough money to use special attack. Instead "+attack(other);
     }
 
   }
-  /*Restores 5 special to other*/
+  // 
   public String support(Adventurer other){
     return "Gives a coffee to "+other+" and restores "
     + other.restoreSpecial(5)+" "+other.getSpecialName();
