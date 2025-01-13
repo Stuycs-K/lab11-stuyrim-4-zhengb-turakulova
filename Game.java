@@ -38,7 +38,7 @@ public class Game{
 
     for (int y = 2; y < HEIGHT; y++) {
       drawText("|", y, 1);
-      drawText("|", y, 40);
+      if (y > 20) drawText("|", y, 40);
       drawText("|", y, WIDTH);
     }
 
