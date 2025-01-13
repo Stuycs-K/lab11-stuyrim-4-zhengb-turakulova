@@ -4,7 +4,7 @@ public class NYUStudent extends Adventurer{
   public NYUStudent(String name, int hp) {
     super(name, hp);
     setmaxHP(30);
-    
+
     moneyMax = 10;
     money = moneyMax / 2;
 
@@ -21,7 +21,7 @@ public class NYUStudent extends Adventurer{
   public String getSpecialName(){
     return "money";
   }
-  
+
   public int getSpecial(){
     return money;
   }
@@ -57,19 +57,29 @@ public class NYUStudent extends Adventurer{
     }
 
   }
-  // 
+  //
   public String support(Adventurer other){
     return "Gives a coffee to "+other+" and restores "
     + other.restoreSpecial(5)+" "+other.getSpecialName();
   }
+
   /*Restores 6 special and 1 hp to self.*/
   public String support(){
-    int hp = 1;
-    setHP(getHP()+hp);
-    return this+" drinks a coffee to restores "+restoreSpecial(6)+" "
-    + getSpecialName()+ " and "+hp+" HP";
+    if(getSpecial() < 3 && getSpecial() > 0){
+      int hp = 4;
+      if(getHP() + hp > getMaxHP()){
+        hp = getMaxHP() - getHP();
+      }
+      setHP(getHP()+hp);
+      setSpecial(getSpecial() - 1);
+      return this+" receives their weekly deposit from dad, restoring "+hp+" HP";
+    }else if(getSpecial() > 3){
+      return this + " can only self support if " + getSpecialName() + " is less than 3"
+    }else{
+      return this + " doesn't have enough " + getSpecialName();
+    }
+
   }
 
 
 }
-
