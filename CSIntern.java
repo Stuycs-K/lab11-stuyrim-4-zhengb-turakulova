@@ -17,7 +17,7 @@ public class CSIntern extends Adventurer {
       this("Daniel");
     }
       public String getSpecialName(){
-        return "work experience";
+        return "expr";
       }
       
       public int getSpecial(){

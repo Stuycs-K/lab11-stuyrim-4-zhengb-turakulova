@@ -19,7 +19,7 @@ public class NYUStudent extends Adventurer{
   }
 
   public String getSpecialName(){
-    return "daddy's money";
+    return "money";
   }
   
   public int getSpecial(){

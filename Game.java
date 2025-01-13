@@ -8,11 +8,18 @@ public class Game{
   public static void main(String[] args) {
     Text.clear();
    
-    // drawBackground();
-    TextBox(1, 1, 5, 10, "abc adskj asdok jas a ");
-    TextBox(1, 1, 5, 10, "abcdef adasl");
+    drawBackground();
+    // for (int y = 1; y < HEIGHT; y++) {
+    //   for (int x = 1; x < WIDTH; x++) {
+    //     drawText("x", y, x);
+    //   }
+    // }
+    // TextBox(3, 3, 5, 10, "123456789");
+    // TextBox(3, 3, 5, 10, "hi");
     // System.out.println();
+    drawScreen();
     // run();
+    Text.go(HEIGHT + 1, 1);
   }
 
   //Display the borders of your screen that will not change.
@@ -23,18 +30,19 @@ public class Game{
       if (x==1 || x==WIDTH) whatDraw = "+";
       else whatDraw = "=";
 
-      Text.go(1, x);
-      System.out.print(whatDraw);
-      Text.go(HEIGHT, x);
-      System.out.print(whatDraw);
+      drawText(whatDraw, 1, x);
+      drawText(whatDraw, 20, x);
+      drawText(whatDraw, 25, x);
+      drawText(whatDraw, HEIGHT, x);
     }
 
     for (int y = 2; y < HEIGHT; y++) {
-      Text.go(y, 1);
-      System.out.print("|");
-      Text.go(y, WIDTH);
-      System.out.print("|");
+      drawText("|", y, 1);
+      drawText("|", y, 40);
+      drawText("|", y, WIDTH);
     }
+
+    
   }
 
   //Display a line of text starting at
@@ -56,6 +64,7 @@ public class Game{
   *@param height the number of rows
   */
   public static void TextBox(int row, int col, int width, int height, String text){
+    int originalR = row, originalC = col, length = text.length();
     int blank = width * height - text.length();
 
     if (blank < 0) {
@@ -71,12 +80,28 @@ public class Game{
     }
     drawText(text, row, col);
 
+    row = originalR + (length / width);
+    col = originalC + (length % width);
+
+    // System.out.println(row+1);
+    // System.out.println(col+1);
+    // System.out.println(blank);
 
     while (blank > 0) {
-      if (blank % width == 0) System.out.println();
-      System.out.print(" ");
+      // System.out.println("(" + (row) + ", " + (col) + ")");
+      drawText(" ", row, col);
       blank--;
+
+      if (blank % width == 0) {
+        row++;
+        col = originalC;
+      }
+      else col++;
     }
+
+    // System.out.println(row);
+    // System.out.println(col);
+
   }
 
 
@@ -109,8 +134,19 @@ public class Game{
     *Caffeine: 20 Mana: 10   Snark: 1
     * ***THIS ROW INTENTIONALLY LEFT BLANK***
     */
-    public static void drawParty(ArrayList<Adventurer> party,int startRow){
+    public static void drawParty(ArrayList<Adventurer> party,int startRow, int startCol){
+      int width = (WIDTH / 2) / (party.size()) - 1;
 
+      TextBox(startRow+3, startCol, 38, 1, " ");
+      
+      for (int a = 0; a < party.size(); a++) {
+        Adventurer current = party.get(a);
+        TextBox(startRow, startCol, width, 1, current.toString());
+        TextBox(startRow+1, startCol, width, 1, "HP: " + current.getHP());
+        TextBox(startRow+2, startCol, width, 1, current.getSpecialName() + ": " + current.getSpecial());
+        
+        startCol += (width+1);
+      }
       /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
       //YOUR CODE HERE
       /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
@@ -135,10 +171,22 @@ public class Game{
   //Do not write over the blank areas where text will appear.
   //Place the cursor at the place where the user will by typing their input at the end of this method.
   public static void drawScreen(){
-
     drawBackground();
+    // drawBackground()
+
+    ArrayList<Adventurer> party = new ArrayList<Adventurer>(3);
+    for (int i = 0; i < 3; i++) {
+      party.add(createRandomAdventurer());
+    }
+    drawParty(party, 21, 2);
 
     //draw player party
+
+    ArrayList<Adventurer> enemies = new ArrayList<Adventurer>(3);
+    for (int i = 0; i < 3; i++) {
+      enemies.add(createRandomAdventurer());
+    }
+    drawParty(enemies, 21, 41);
 
     //draw enemy party
 
