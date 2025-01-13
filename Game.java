@@ -6,7 +6,12 @@ public class Game{
   private static final int BORDER_BACKGROUND = Text.WHITE + Text.BACKGROUND;
 
   public static void main(String[] args) {
-    drawBackground();
+    Text.clear();
+   
+    // drawBackground();
+    TextBox(1, 1, 5, 10, "abc adskj asdok jas a ");
+    TextBox(1, 1, 5, 10, "abcdef adasl");
+    // System.out.println();
     // run();
   }
 
@@ -20,7 +25,7 @@ public class Game{
 
       Text.go(1, x);
       System.out.print(whatDraw);
-      Text.go(WIDTH, x);
+      Text.go(HEIGHT, x);
       System.out.print(whatDraw);
     }
 
@@ -36,9 +41,8 @@ public class Game{
   //(columns and rows start at 1 (not zero) in the terminal)
   //use this method in your other text drawing methods to make things simpler.
   public static void drawText(String s,int startRow, int startCol){
-    /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-    //YOUR CODE HERE
-    /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    Text.go(startRow, startCol);
+    System.out.print(s);
   }
 
   /*Use this method to place text on the screen at a particular location.
@@ -52,9 +56,27 @@ public class Game{
   *@param height the number of rows
   */
   public static void TextBox(int row, int col, int width, int height, String text){
-    /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-    //YOUR CODE HERE
-    /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    int blank = width * height - text.length();
+
+    if (blank < 0) {
+      throw new IllegalArgumentException(Text.colorize("\"" + text + "\"" + " is too long for width: " + width + " and height: " + height, Text.BOLD, Text.RED + Text.BRIGHT, Text.UNDERLINE));
+    }
+    
+    if (text.length() > width) {
+      while (text.length() > width) {
+        drawText(text.substring(0, width), row, col);
+        text = text.substring(width);
+        row++;
+      }
+    }
+    drawText(text, row, col);
+
+
+    while (blank > 0) {
+      if (blank % width == 0) System.out.println();
+      System.out.print(" ");
+      blank--;
+    }
   }
 
 
@@ -63,7 +85,19 @@ public class Game{
     //return a random adventurer (choose between all available subclasses)
     //feel free to overload this method to allow specific names/stats.
     public static Adventurer createRandomAdventurer(){
-      return new CodeWarrior("Bob"+(int)(Math.random()*100));
+      Random rand = new Random();
+      int choice = rand.nextInt(0, 3);
+      if (choice == 0) return new CodeWarrior();
+      if (choice == 1) return new NYUStudent();
+      else return new CSIntern();
+    }
+
+    public static Adventurer createRandomAdventurer(String name) {
+      Random rand = new Random();
+      int choice = rand.nextInt(0, 3);
+      if (choice == 0) return new CodeWarrior(name);
+      if (choice == 1) return new NYUStudent(name);
+      else return new CSIntern(name);
     }
 
     /*Display a List of 2-4 adventurers on the rows row through row+3 (4 rows max)

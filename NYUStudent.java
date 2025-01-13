@@ -10,6 +10,14 @@ public class NYUStudent extends Adventurer{
 
   }
 
+  public NYUStudent(String name) {
+    this(name, (int)(Math.random()*3) + 25);
+  }
+
+  public NYUStudent() {
+    this("Jay Ma");
+  }
+
   public String getSpecialName(){
     return "daddy's money";
   }

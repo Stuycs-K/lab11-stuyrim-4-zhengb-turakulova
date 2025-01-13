@@ -42,12 +42,6 @@ public class Text{
     System.out.print("\u001b[2J");
   }
 
-  /* Go to line and print30x80*/
-  public static void printAt(String text, int row, int col){
-    go(row, col);
-    System.out.print(text);
-  }
-
   /*Overloaded Colorize methods.
   c1,c2 and c3 are any color modifiers such as bold/color/background color etc.
   */

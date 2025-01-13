@@ -7,8 +7,15 @@ public class CSIntern extends Adventurer {
         experienceMax = 15;
         experience = 9;
     
-      }
-    
+    }
+
+    public CSIntern(String name) {
+      this(name, (int)(Math.random()*3) + 19);
+    }
+  
+    public CSIntern() {
+      this("Daniel");
+    }
       public String getSpecialName(){
         return "work experience";
       }
@@ -52,8 +59,8 @@ public class CSIntern extends Adventurer {
       public String support(Adventurer other){
 		if(this.getSpecial() > 1){
 			int hp = 2;
-			if(other.getHP() + hp > other.getMaxHP()){
-				hp = other.getMaxHP() - other.getHP();
+			if(other.getHP() + hp > other.getmaxHP()){
+				hp = other.getmaxHP() - other.getHP();
 			}
 			other.setHP(hp);
 			this.setSpecial(this.getSpecial() - 2);
@@ -67,8 +74,8 @@ public class CSIntern extends Adventurer {
       /*uses 3 work experience: adds buffedD for 2 rounds Restores 2 hp to self, only hp if insufficient experience.*/
       public String support(){
 		int hp = 2;
-		if(getHP() + hp > getMaxHP()){
-			hp = getMaxHP() - getHP();
+		if(getHP() + hp > getmaxHP()){
+			hp = getmaxHP() - getHP();
 		}
         setHP(getHP()+hp);
 		if(getSpecial() > 1){
