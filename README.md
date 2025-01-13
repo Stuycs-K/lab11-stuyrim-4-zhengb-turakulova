@@ -29,7 +29,7 @@ Max Special: 10
 
 #### Abilities
 - Attack
-  - Description: The exchange student flaunts his bank account, rendering the opponent immobile for the next 2 rounds.
+  - Description: The exchange student flaunts his bank account, rendering the opponent immobile for the next 1-2 rounds.
   - Consumes 1 daddy’s money.
 - Ally Support
   - Description: The exchange student generously shares his money with everyone, boosting their special by 1 and health by 3.
@@ -57,5 +57,3 @@ Max Special: 15
 - Ally Support
   - Description: CS Intern advises ally to avoid unpaid internships and restores 1 special and 2 health
   - Consumes 2 work experience
-
-
