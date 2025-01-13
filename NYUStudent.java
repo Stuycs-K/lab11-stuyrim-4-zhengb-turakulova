@@ -59,11 +59,21 @@ public class NYUStudent extends Adventurer{
   }
   //
   public String support(Adventurer other){
-    return "Gives a coffee to "+other+" and restores "
-    + other.restoreSpecial(5)+" "+other.getSpecialName();
+    if(this.getSpecial() > 1){
+      int hp = 3;
+      if(other.getHP() + hp > other.getMaxHP()){
+        hp = other.getMaxHP() - other.getHP();
+      }
+      other.setHP(other.getMaxHP()
+      other.setSpecial(other.getSecial() - 2));
+    return this " generously shares their money with everyone, boosting their special by  "+ other.restoreSpecial(1) +" and HP by "
+    + hp;
+    }else{
+      return this + " needs at least 2 " + this.getSpecialName() + " to use ally support";
+    } //+ other.restoreSpecial(5)+" "+other.getSpecialName();
   }
 
-  /*Restores 6 special and 1 hp to self.*/
+  /*if  at least 1 special and special less than 3 restores 4 hp to self.*/
   public String support(){
     if(getSpecial() < 3 && getSpecial() > 0){
       int hp = 4;
