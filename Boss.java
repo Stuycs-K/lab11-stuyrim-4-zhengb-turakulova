@@ -71,20 +71,14 @@ public class Boss extends Adventurer {
 		 }
       }
 
-      /*uses 3 work experience: adds buffedD for 2 rounds Restores 2 hp to self, only hp if insufficient experience.*/
+      /*uses 3 work experience: adds buffedD for 2 rounds Restores 4 hp to self, only hp if insufficient experience.*/
       public String support(){
-		int hp = 2;
-		if(getHP() + hp > getmaxHP()){
-			hp = getmaxHP() - getHP();
-		}
+    		int hp = 3;
+    		if(getHP() + hp > getmaxHP()){
+    		    hp = getmaxHP() - getHP();
+    		}
         setHP(getHP()+hp);
-		if(getSpecial() > 1){
-			setBuffedD(getBuffedD() + 2);
-			setSpecial(getSpecial() - 2);
-			return this + " locks in, boosts their damage by 1.3x for the next 2 rounds, and restores "+hp+" HP"; //should we make another field for "buffed" in adventurer or just this one
-		}else{
-			return this + " doesn't have enough " + getSpecialName() + " to buff, instead just restore " + hp + " HP";
-		}
+			  return this + " checks their bank account, increasing their sense of security, +" + restoreSpecial(2) +  " " + getSpecialName() + ", and +" + hp + " HP"; //should we make another field for "buffed" in adventurer or just this one
 	  }
 
 }
