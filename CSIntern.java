@@ -50,7 +50,7 @@ public class CSIntern extends Adventurer {
           + damage + " damage";
         }
         else{
-          return this + " needs 2 " this.getSpecialName() + " to use special attack. Instead "+attack(other);
+          return "Not enough " + this.getSpecialName() + " to use special attack. Instead "+ this.attack(other);
         }
 
       }

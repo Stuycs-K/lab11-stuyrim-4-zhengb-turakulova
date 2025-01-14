@@ -49,11 +49,11 @@ public class NYUStudent extends Adventurer{
       int duration = (int)(Math.random()*2) + 1; // paralyzes the opponent for the next 1-2 rounds
 
       other.setParalyzedD(duration);
-      return this + " flaunts their bank account, causing the opponent to fall into a depression for the next "
-      + duration + " rounds";
+      return this + " flaunts their bank account, causing the opponent to fall into a depression for the next " 
+	  + duration + " rounds";
     }
     else{
-      return "Not enough money to use special attack. Instead "+attack(other);
+      return "Not enough money to use special attack. Instead "+ attack(other);
     }
 
   }
@@ -61,13 +61,13 @@ public class NYUStudent extends Adventurer{
   public String support(Adventurer other){
     if(this.getSpecial() > 1){
       int hp = 3;
-      if(other.getHP() + hp > other.getMaxHP()){
-        hp = other.getMaxHP() - other.getHP();
+      if(other.getHP() + hp > other.getmaxHP()){
+        hp = other.getmaxHP() - other.getHP();
       }
-      other.setHP(other.getMaxHP()
-      other.setSpecial(other.getSecial() - 2));
-    return this " generously shares their money with everyone, boosting their special by  "+ other.restoreSpecial(1) +" and HP by "
-    + hp;
+      other.setHP(other.getHP() + hp);
+      other.setSpecial(other.getSpecial() - 2);
+    return this + " generously shares their money with everyone, boosting their special by  "+ (other.restoreSpecial(1)) 
+	+ " and HP by " + hp;
     }else{
       return this + " needs at least 2 " + this.getSpecialName() + " to use ally support";
     } //+ other.restoreSpecial(5)+" "+other.getSpecialName();
@@ -77,14 +77,14 @@ public class NYUStudent extends Adventurer{
   public String support(){
     if(getSpecial() < 3 && getSpecial() > 0){
       int hp = 4;
-      if(getHP() + hp > getMaxHP()){
-        hp = getMaxHP() - getHP();
+      if(getHP() + hp > getmaxHP()){
+        hp = getmaxHP() - getHP();
       }
       setHP(getHP()+hp);
       setSpecial(getSpecial() - 1);
       return this+" receives their weekly deposit from dad, restoring "+hp+" HP";
     }else if(getSpecial() > 3){
-      return this + " can only self support if " + getSpecialName() + " is less than 3"
+      return this + " can only self support if " + getSpecialName() + " is less than 3";
     }else{
       return this + " doesn't have enough " + getSpecialName();
     }
