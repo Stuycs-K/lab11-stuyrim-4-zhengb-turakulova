@@ -19,7 +19,7 @@ Make a clear list of features that work/dont work
 ## Adventurer Subclasses
 
 ### NYU Exchange Student
-Base Health: 25
+Base Health: 25-27
 
 Max Health: 30
 
@@ -40,7 +40,7 @@ Max Special: 10
   - Consumes 1 daddy’s money, but can only be used if daddy’s money is less than 3.
 
 ### Unpaid CS Intern
-Base Health: 20
+Base Health: 19-21
 
 Max Health: 25
 
@@ -59,10 +59,10 @@ Max Special: 15
 - Ally Support
   - Description: CS Intern advises ally to avoid unpaid internships and restores 1 special and 2 health
   - Consumes 2 work experience
-  
+
 ### Boss: Senior SWE
-Base Health:  25
-  
+Base Health:  25-27
+
 Max Health: 30
 
 Base Special: 14
@@ -70,10 +70,9 @@ Base Special: 14
 Special max: 16
 
 #### Abilities
-  - Fields: health, savings, savingsMax
 - Self Support: check bank account
   - Health + 3 special + 2
-- Attack: 
+- Attack:
   - deals 1 to 2 damage, and passively restores 1 special to attacker.
   - Special: pass interview and take other’s job
   - Damage 4
