@@ -59,3 +59,22 @@ Max Special: 15
 - Ally Support
   - Description: CS Intern advises ally to avoid unpaid internships and restores 1 special and 2 health
   - Consumes 2 work experience
+  
+### Boss: Senior SWE
+Base Health:  25
+  
+Max Health: 30
+
+Base Special: 14
+
+Special max: 16
+
+#### Abilities
+  - Fields: health, savings, savingsMax
+- Self Support: check bank account
+  - Health + 3 special + 2
+- Attack: 
+  - deals 1 to 2 damage, and passively restores 1 special to attacker.
+  - Special: pass interview and take other’s job
+  - Damage 4
+  - Consumes: 3 savings for unemployment expenditures
