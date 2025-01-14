@@ -29,8 +29,9 @@ Max Special: 10
 
 #### Abilities
 - Attack
-  - Description: The exchange student flaunts his bank account, rendering the opponent immobile for the next 1-2 rounds.
-  - Consumes 1 daddy’s money.
+  - Normal: deals 1 to 2 damage, and passively restores 1 special to attacker.
+  - Special: The exchange student flaunts his bank account, rendering the opponent immobile for the next 1-2 rounds.
+	- Consumes 1 daddy’s money.
 - Ally Support
   - Description: The exchange student generously shares his money with everyone, boosting their special by 1 and health by 3.
   - Consumes 2 daddy’s money.
@@ -49,8 +50,9 @@ Max Special: 15
 
 #### Abilities
 - Attack
-  - Description: The unpaid intern shows their superior resume, shocking the opponent and dealing 4 points of damage.
-  - Consumes 2 work experience
+  - Normal: deals 1 to 2 damage, and passively restores 1 special to attacker.
+  - Special: The unpaid intern shows their superior resume, shocking the opponent and dealing 4 points of damage.
+	- Consumes 2 work experience
 - Self Support
   - Description: The CS Intern locks in, boosting its damage by 1.3x for the next 2 rounds. Restores 2 health.
   - Consumes 3 work experience, if insufficient just restore 2 HP.

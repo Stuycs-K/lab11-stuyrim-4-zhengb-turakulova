@@ -37,9 +37,9 @@ public class NYUStudent extends Adventurer{
   public String attack(Adventurer other){
     int damage = (int)(Math.random()*2)+1; // 1 to 2 damage
     other.applyDamage(damage);
-    restoreSpecial(1); // psasively restore 1 special
+    restoreSpecial(1); // passively restore 1 special
     return this + " attacked "+ other + " and dealt "+ damage +
-    " points of damage. They then pick up the (1) money " + other + "dropped";
+    " points of damage. They then pick up the " + this.restoreSpecial(1) + " money " + other + " dropped";
   }
 
 

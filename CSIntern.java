@@ -33,12 +33,12 @@ public class CSIntern extends Adventurer {
       }
 
       public String attack(Adventurer other){
-        int damage = (int)(Math.random()*2)+1; // 1 to 2 damage
-        other.applyDamage(damage);
-        restoreSpecial(1); // psasively restore 1 special
-        return this + " attacked "+ other + " and dealt "+ damage +
-        " points of damage. They then pick up the (1) money " + other + "dropped";
-      }
+		int damage = (int)(Math.random()*2)+1; // 1 to 2 damage
+		other.applyDamage(damage);
+		restoreSpecial(1); // passively restore 1 special
+		return this + " attacked "+ other + " and dealt "+ damage +
+		" points of damage. They then pick up the " + this.restoreSpecial(1) + " money " + other + " dropped";
+	  }
 
       //4 points of damage. Consumes 2 work experience
       public String specialAttack(Adventurer other){
