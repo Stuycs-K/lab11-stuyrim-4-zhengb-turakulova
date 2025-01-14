@@ -7,18 +7,7 @@ public class Game{
 
   public static void main(String[] args) {
     Text.clear();
-   
-    drawBackground();
-    // for (int y = 1; y < HEIGHT; y++) {
-    //   for (int x = 1; x < WIDTH; x++) {
-    //     drawText("x", y, x);
-    //   }
-    // }
-    // TextBox(3, 3, 5, 10, "123456789");
-    // TextBox(3, 3, 5, 10, "hi");
-    // System.out.println();
-    drawScreen();
-    // run();
+    run();
     Text.go(HEIGHT + 1, 1);
   }
 
@@ -38,7 +27,7 @@ public class Game{
 
     for (int y = 2; y < HEIGHT; y++) {
       drawText("|", y, 1);
-      if (y > 20) drawText("|", y, 40);
+      if (y < 25) drawText("|", y, 40);
       drawText("|", y, WIDTH);
     }
 
@@ -110,8 +99,7 @@ public class Game{
     //return a random adventurer (choose between all available subclasses)
     //feel free to overload this method to allow specific names/stats.
     public static Adventurer createRandomAdventurer(){
-      Random rand = new Random();
-      int choice = rand.nextInt(0, 3);
+      int choice = (int) Math.random()*3;
       if (choice == 0) return new CodeWarrior();
       if (choice == 1) return new NYUStudent();
       else return new CSIntern();
@@ -135,7 +123,7 @@ public class Game{
     * ***THIS ROW INTENTIONALLY LEFT BLANK***
     */
     public static void drawParty(ArrayList<Adventurer> party,int startRow, int startCol){
-      int width = (WIDTH / 2) / (party.size()) - 1;
+      int width = 12;
 
       TextBox(startRow+3, startCol, 38, 1, " ");
       
@@ -170,25 +158,20 @@ public class Game{
   //Display the party and enemies
   //Do not write over the blank areas where text will appear.
   //Place the cursor at the place where the user will by typing their input at the end of this method.
-  public static void drawScreen(){
+  public static void drawScreen(ArrayList<Adventurer> party, ArrayList<Adventurer> enemies){
     drawBackground();
     // drawBackground()
 
-    ArrayList<Adventurer> party = new ArrayList<Adventurer>(3);
-    for (int i = 0; i < 3; i++) {
-      party.add(createRandomAdventurer());
-    }
     drawParty(party, 21, 2);
 
     //draw player party
 
-    ArrayList<Adventurer> enemies = new ArrayList<Adventurer>(3);
-    for (int i = 0; i < 3; i++) {
-      enemies.add(createRandomAdventurer());
-    }
     drawParty(enemies, 21, 41);
 
     //draw enemy party
+
+    Text.go(26, 2);
+    Text.showCursor();
 
   }
 
@@ -221,6 +204,7 @@ public class Game{
     //If only 1 enemy is added it should be the boss class.
     //start with 1 boss and modify the code to allow 2-3 adventurers later.
     ArrayList<Adventurer>enemies = new ArrayList<Adventurer>();
+    enemies.add(createRandomAdventurer());
     /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
     //YOUR CODE HERE
     /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
@@ -228,6 +212,9 @@ public class Game{
     //Adventurers you control:
     //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
     ArrayList<Adventurer> party = new ArrayList<>();
+    for (int i = 0; i < 3; i++) {
+      party.add(createRandomAdventurer());
+    }
     /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
     //YOUR CODE HERE
     /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
@@ -241,19 +228,20 @@ public class Game{
     //Draw the window border
 
     //You can add parameters to draw screen!
-    drawScreen();//initial state.
+    drawScreen(party, enemies);//initial state.
 
     //Main loop
 
     //display this prompt at the start of the game.
     String preprompt = "Enter command for "+party.get(whichPlayer)+": attack/special/quit";
+    System.out.print(preprompt);
 
     while(! (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit"))){
       //Read user input
       input = userInput(in);
 
       //example debug statment
-      TextBox(24,2,1,78,"input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent );
+      TextBox(31,2,100,78,"input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent );
 
       //display event based on last turn's input
       if(partyTurn){
@@ -262,6 +250,7 @@ public class Game{
         if(input.equals("attack") || input.equals("a")){
           /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
           //YOUR CODE HERE
+          party.get(whichPlayer).attack(enemies.get(0));
           /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
         }
         else if(input.equals("special") || input.equals("sp")){
@@ -286,12 +275,14 @@ public class Game{
           //This is a player turn.
           //Decide where to draw the following prompt:
           String prompt = "Enter command for "+party.get(whichPlayer)+": attack/special/quit";
-
-
+          TextBox(26, 2, 78, 2, prompt);
+          Text.go(27, 2);
         }else{
           //This is after the player's turn, and allows the user to see the enemy turn
           //Decide where to draw the following prompt:
           String prompt = "press enter to see monster's turn";
+          TextBox(28, 2, 78, 2, prompt);
+          Text.go(29, 2);
 
           partyTurn = false;
           whichOpponent = 0;
@@ -310,12 +301,14 @@ public class Game{
 
         //Decide where to draw the following prompt:
         String prompt = "press enter to see next turn";
+        TextBox(28, 2, 78, 2, prompt);
+        Text.go(29, 2);
 
         whichOpponent++;
 
       }//end of one enemy.
 
-      //modify this if statement.
+      //modify this if statement. TODO: make it so that one character move per side
       if(!partyTurn && whichOpponent >= enemies.size()){
         //THIS BLOCK IS TO END THE ENEMY TURN
         //It only triggers after the last enemy goes.
@@ -323,11 +316,13 @@ public class Game{
         turn++;
         partyTurn=true;
         //display this prompt before player's turn
+
         String prompt = "Enter command for "+party.get(whichPlayer)+": attack/special/quit";
+        TextBox(26, 2, 78, 2, prompt);
       }
 
       //display the updated screen after input has been processed.
-      drawScreen();
+      drawScreen(party, enemies);
 
 
     }//end of main game loop
