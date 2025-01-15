@@ -72,6 +72,9 @@ public class Game{
     row = originalR + (length / width);
     col = originalC + (length % width);
 
+    int endRow = row;
+    int endCol = col;
+
     // System.out.println(row+1);
     // System.out.println(col+1);
     // System.out.println(blank);
@@ -90,6 +93,7 @@ public class Game{
 
     // System.out.println(row);
     // System.out.println(col);
+    Text.go(endRow, endCol);
 
   }
 
@@ -170,7 +174,7 @@ public class Game{
 
     //draw enemy party
 
-    Text.go(26, 2);
+    Text.go(27, 2);
     Text.showCursor();
 
   }
@@ -183,8 +187,7 @@ public class Game{
       String input = in.nextLine();
 
       //clear the text that was written
-
-      return input;
+    return input;
   }
 
   public static void quit(){
@@ -233,15 +236,16 @@ public class Game{
     //Main loop
 
     //display this prompt at the start of the game.
-    String preprompt = "Enter command for "+party.get(whichPlayer)+": attack/special/quit";
-    System.out.print(preprompt);
+    String preprompt = "AEnter command for "+party.get(whichPlayer)+": attack/special/quit";
+    TextBox(26, 2, 78, 2, preprompt);
+    Text.go(27, 2);
 
     while(! (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit"))){
       //Read user input
       input = userInput(in);
 
       //example debug statment
-      TextBox(31,2,100,78,"input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent );
+      // TextBox(31,2,100,78,"input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent );
 
       //display event based on last turn's input
       if(partyTurn){
@@ -274,12 +278,13 @@ public class Game{
         if(whichPlayer < party.size()){
           //This is a player turn.
           //Decide where to draw the following prompt:
-          String prompt = "Enter command for "+party.get(whichPlayer)+": attack/special/quit";
+          String prompt = "BEnter command for "+party.get(whichPlayer)+": attack/special/quit";
           TextBox(26, 2, 78, 2, prompt);
           Text.go(27, 2);
         }else{
           //This is after the player's turn, and allows the user to see the enemy turn
           //Decide where to draw the following prompt:
+          TextBox(26, 2, 78, 2, " ");
           String prompt = "press enter to see monster's turn";
           TextBox(28, 2, 78, 2, prompt);
           Text.go(29, 2);
@@ -317,7 +322,7 @@ public class Game{
         partyTurn=true;
         //display this prompt before player's turn
 
-        String prompt = "Enter command for "+party.get(whichPlayer)+": attack/special/quit";
+        String prompt = "CEnter command for "+party.get(whichPlayer)+": attack/special/quit";
         TextBox(26, 2, 78, 2, prompt);
       }
 

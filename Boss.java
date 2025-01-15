@@ -1,6 +1,6 @@
 public class Boss extends Adventurer {
     int savings, savingsMax;
-    public Boss String name, int hp) {
+    public Boss (String name, int hp) {
         super(name, hp);
         setmaxHP(30);
 
