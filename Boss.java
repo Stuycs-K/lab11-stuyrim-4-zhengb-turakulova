@@ -4,16 +4,16 @@ public class Boss extends Adventurer {
         super(name, hp);
         setmaxHP(30);
 
-        experienceMax = 16;
-        experience = 14;
+        savingsMax = 16;
+        savings = 14;
 
     }
 
-    public CSIntern(String name) {
+    public Boss(String name) {
       this(name, (int)(Math.random()*3) + 25);
     }
 
-    public CSIntern() {
+    public Boss() {
       this("Senior");
     }
       public String getSpecialName(){
@@ -42,36 +42,24 @@ public class Boss extends Adventurer {
 
       //4 points of damage. Consumes 2 work experience
       public String specialAttack(Adventurer other){
-        if(this.getSpecial() > 1){
+        if(this.getSpecial() > 2){
           int damage = 4;
           other.setHP(other.getHP() - damage);
-		  this.setSpecial(this.getSpecial()-2); // consumes 1 work experience
-          return this + " shows " + other + " their superior resume, dealing "
-          + damage + " damage";
+		  this.setSpecial(this.getSpecial()-3); // consumes 1 work experience
+          return this + " pulls up to the interview in their Jaguar and takes the job from " + other + ". Doing " 
+		  + damage + " points of damage. They spend 3 " + this.getSpecialName() + " for unemployment expenses";   
         }
         else{
-          return "Not enough " + this.getSpecialName() + " to use special attack. Instead "+ this.attack(other);
+          return "Not enough " + this.getSpecialName() + " for unemploymeny spending while job hunting. Instead "+ this.attack(other);
         }
-
       }
 
       // restores 1 special and 2 health for 2 work experience
       public String support(Adventurer other){
-		if(this.getSpecial() > 1){
-			int hp = 2;
-			if(other.getHP() + hp > other.getmaxHP()){
-				hp = other.getmaxHP() - other.getHP();
-			}
-			other.setHP(hp);
-			this.setSpecial(this.getSpecial() - 2);
-			return this + " advises "+other+" to avoid unpaid internships and restores "
-			+ other.restoreSpecial(1)+" "+other.getSpecialName() + " and " + hp + " HP";
-		 }else{
-		 return this + " doesn't have enough " + this.getSpecialName() + " to support ally";
-		 }
+		  return this + " is the Boss, so they support themself like a boss: " + this.support();
       }
 
-      /*uses 3 work experience: adds buffedD for 2 rounds Restores 4 hp to self, only hp if insufficient experience.*/
+      /*Health + 3 special + 2 */
       public String support(){
     		int hp = 3;
     		if(getHP() + hp > getmaxHP()){
