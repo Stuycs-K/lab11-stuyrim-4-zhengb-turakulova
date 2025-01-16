@@ -149,9 +149,17 @@ public class Game{
   public static String colorByPercent(int hp, int maxHP){
     String output = String.format("%2s", hp+"")+"/"+String.format("%2s", maxHP+"");
     //COLORIZE THE OUTPUT IF HIGH/LOW:
-    // under 25% : red
+	double hpFraction = 100.0 * (hp / (double) maxHP);
+    // under 25% : red 
     // under 75% : yellow
     // otherwise : white
+	if(hpFraction < 25.0){
+		output = Text.colorize(output, Text.RED);
+	}else if( hpFraction < 75.0){
+		output = Text.colorize(output, Text.YELLOW);
+	}else{
+		output = Text.colorize(output, Text.WHITE);
+	}
     return output;
   }
 
