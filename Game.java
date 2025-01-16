@@ -1,5 +1,5 @@
 import java.util.*;
-public class Game{  
+public class Game{
   private static final int WIDTH = 80;
   private static final int HEIGHT = 30;
   private static final int BORDER_COLOR = Text.BLACK;
@@ -31,7 +31,7 @@ public class Game{
       drawText("|", y, WIDTH);
     }
 
-    
+
   }
 
   //Display a line of text starting at
@@ -59,7 +59,7 @@ public class Game{
     if (blank < 0) {
       throw new IllegalArgumentException(Text.colorize("\"" + text + "\"" + " is too long for width: " + width + " and height: " + height, Text.BOLD, Text.RED + Text.BRIGHT, Text.UNDERLINE));
     }
-    
+
     if (text.length() > width) {
       while (text.length() > width) {
         drawText(text.substring(0, width), row, col);
@@ -103,7 +103,7 @@ public class Game{
     //return a random adventurer (choose between all available subclasses)
     //feel free to overload this method to allow specific names/stats.
     public static Adventurer createRandomAdventurer(){
-      int choice = (int) Math.random()*3;
+      int choice = (int) (Math.random()*3);
       if (choice == 0) return new CodeWarrior();
       if (choice == 1) return new NYUStudent();
       else return new CSIntern();
@@ -130,13 +130,13 @@ public class Game{
       int width = 12;
 
       TextBox(startRow+3, startCol, 38, 1, " ");
-      
+
       for (int a = 0; a < party.size(); a++) {
         Adventurer current = party.get(a);
         TextBox(startRow, startCol, width, 1, current.toString());
         TextBox(startRow+1, startCol, width, 1, "HP: " + current.getHP());
         TextBox(startRow+2, startCol, width, 1, current.getSpecialName() + ": " + current.getSpecial());
-        
+
         startCol += (width+1);
       }
       /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
@@ -150,7 +150,7 @@ public class Game{
     String output = String.format("%2s", hp+"")+"/"+String.format("%2s", maxHP+"");
     //COLORIZE THE OUTPUT IF HIGH/LOW:
 	double hpFraction = 100.0 * (hp / (double) maxHP);
-    // under 25% : red 
+    // under 25% : red
     // under 75% : yellow
     // otherwise : white
 	if(hpFraction < 25.0){
@@ -160,7 +160,7 @@ public class Game{
 	}else{
 		output = Text.colorize(output, Text.WHITE);
 	}
-    return output;
+    return output + "\u001b[0m";
   }
 
 
