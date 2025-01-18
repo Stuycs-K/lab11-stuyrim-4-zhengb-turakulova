@@ -56,7 +56,7 @@ public class Game{
     int originalR = row, originalC = col, length = text.length();
     int blank = width * height - text.length();
 
-    if (blank < 0) {
+    if (blank < 0 && text.indexOf("\u001b[") == -1) {
       throw new IllegalArgumentException(Text.colorize("\"" + text + "\"" + " is too long for width: " + width + " and height: " + height, Text.BOLD, Text.RED + Text.BRIGHT, Text.UNDERLINE));
     }
     
@@ -135,7 +135,7 @@ public class Game{
       for (int a = 0; a < party.size(); a++) {
         Adventurer current = party.get(a);
         TextBox(startRow, startCol, width, 1, current.toString());
-        TextBox(startRow+1, startCol, width, 1, "HP: " + current.getHP());
+        TextBox(startRow+1, startCol, width, 1, "HP: " + colorByPercent(current.getHP(), current.getmaxHP()));
         TextBox(startRow+2, startCol, width, 1, current.getSpecialName() + ": " + current.getSpecial());
         
         startCol += (width+1);
@@ -150,10 +150,17 @@ public class Game{
   public static String colorByPercent(int hp, int maxHP){
     String output = String.format("%2s", hp+"")+"/"+String.format("%2s", maxHP+"");
     //COLORIZE THE OUTPUT IF HIGH/LOW:
+	double hpFraction = 100.0 * (hp / (double) maxHP);
     // under 25% : red
     // under 75% : yellow
     // otherwise : white
-    return output;
+	if(hpFraction < 25.0){
+		return Text.colorize(output, Text.RED);
+	}else if( hpFraction < 75.0){
+		return Text.colorize(output, Text.YELLOW);
+	}else{
+		return output;
+	}
   }
 
 
