@@ -42,6 +42,10 @@ public class CodeWarrior extends Adventurer{
 
   /*Deal 2-7 damage to opponent, restores 2 caffeine*/
   public String attack(Adventurer other){
+	if(this.getParalyzedD() > 0){
+		this.setParalyzedD(this.getParalyzedD() - 1);
+		return this + " is currently too depressed to attack, and will still be for the next " + this.getParalyzedD() + " rounds";
+	}
     int damage = (int)(Math.random()*6)+2;
     other.applyDamage(damage);
     restoreSpecial(2);
@@ -53,6 +57,10 @@ public class CodeWarrior extends Adventurer{
   *Reduces caffeine by 8.
   */
   public String specialAttack(Adventurer other){
+	if(this.getParalyzedD() > 0){
+		this.setParalyzedD(this.getParalyzedD() - 1);
+		return this + " is currently too depressed to attack, and will still be for the next " + this.getParalyzedD() + " rounds";
+	}
     if(getSpecial() >= 8){
       setSpecial(getSpecial()-8);
       int damage = (int)(Math.random()*5+Math.random()*5)+3;

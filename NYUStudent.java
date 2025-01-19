@@ -35,6 +35,10 @@ public class NYUStudent extends Adventurer{
   }
 
   public String attack(Adventurer other){
+	if(this.getParalyzedD() > 0){
+		this.setParalyzedD(this.getParalyzedD() - 1);
+		return this + " is currently too depressed to attack, and will still be for the next " + this.getParalyzedD() + " rounds";
+	}
     int damage = (int)(Math.random()*2)+1; // 1 to 2 damage
     other.applyDamage(damage);
     restoreSpecial(1); // passively restore 1 special
@@ -44,6 +48,10 @@ public class NYUStudent extends Adventurer{
 
 
   public String specialAttack(Adventurer other){
+	if(this.getParalyzedD() > 0){
+		this.setParalyzedD(this.getParalyzedD() - 1);
+		return this + " is currently too depressed to attack, and will still be for the next " + this.getParalyzedD() + " rounds";
+	}
     if(getSpecial() >= 1){
       setSpecial(getSpecial()-1); // consumes 1 daddy's money
       int duration = (int)(Math.random()*2) + 1; // paralyzes the opponent for the next 1-2 rounds
