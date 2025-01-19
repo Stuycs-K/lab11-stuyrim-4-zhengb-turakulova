@@ -34,6 +34,10 @@ public class CSIntern extends Adventurer {
 
       public String attack(Adventurer other){
 		int damage = (int)(Math.random()*2)+1; // 1 to 2 damage
+		if(this.getBuffedD() > 0){
+			this.setBuffedD(other.getBuffedD() - 1);
+			damage++;
+		}
 		other.applyDamage(damage);
 		restoreSpecial(1); // passively restore 1 special
 		return this + " attacked "+ other + " and dealt "+ damage +
@@ -44,7 +48,11 @@ public class CSIntern extends Adventurer {
       public String specialAttack(Adventurer other){
         if(this.getSpecial() > 1){
           int damage = 4;
-          other.setHP(other.getHP() - damage);
+		  if(this.getBuffedD() > 0){ 
+		  this.setBuffedD(this.getBuffedD() - 1);
+		  damage++;
+		  }
+          other.applyDamage(damage);
 		  this.setSpecial(this.getSpecial()-2); // consumes 1 work experience
           return this + " shows " + other + " their superior resume, dealing "
           + damage + " damage";
@@ -79,7 +87,7 @@ public class CSIntern extends Adventurer {
 		}
         setHP(getHP()+hp);
 		if(getSpecial() > 1){
-			setBuffedD(getBuffedD() + 2);
+			setBuffedD(2);
 			setSpecial(getSpecial() - 2);
 			return this + " locks in, boosts their damage by 1.3x for the next 2 rounds, and restores "+hp+" HP"; //should we make another field for "buffed" in adventurer or just this one
 		}else{
