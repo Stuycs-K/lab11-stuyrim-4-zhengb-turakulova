@@ -33,6 +33,10 @@ public class Boss extends Adventurer {
       }
 
       public String attack(Adventurer other){
+		if(this.getParalyzedD() > 0){
+			this.setParalyzedD(this.getParalyzedD() - 1);
+			return this + " is currently too depressed to attack, and will still be for the next " + this.getParalyzedD() + " rounds";
+		}
 		int damage = (int)(Math.random()*2)+1; // 1 to 2 damage
 		other.applyDamage(damage);
 		restoreSpecial(1); // passively restore 1 special
@@ -42,6 +46,10 @@ public class Boss extends Adventurer {
 
       //4 points of damage. Consumes 2 work experience
       public String specialAttack(Adventurer other){
+		if(this.getParalyzedD() > 0){
+			this.setParalyzedD(this.getParalyzedD() - 1);
+			return this + " is currently too depressed to attack, and will still be for the next " + this.getParalyzedD() + " rounds";
+		}
         if(this.getSpecial() > 2){
           int damage = 4;
           other.setHP(other.getHP() - damage);
