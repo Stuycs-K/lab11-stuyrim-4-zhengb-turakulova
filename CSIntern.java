@@ -70,7 +70,7 @@ public class CSIntern extends Adventurer {
 			if(other.getHP() + hp > other.getmaxHP()){
 				hp = other.getmaxHP() - other.getHP();
 			}
-			other.setHP(hp);
+			other.setHP(other.getHP() + hp);
 			this.setSpecial(this.getSpecial() - 2);
 			return this + " advises "+other+" to avoid unpaid internships and restores "
 			+ other.restoreSpecial(1)+" "+other.getSpecialName() + " and " + hp + " HP";

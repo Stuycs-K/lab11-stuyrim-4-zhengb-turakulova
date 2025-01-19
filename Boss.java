@@ -52,7 +52,7 @@ public class Boss extends Adventurer {
 		}
         if(this.getSpecial() > 2){
           int damage = 4;
-          other.setHP(other.getHP() - damage);
+          other.applyDamage(damage);
 		  this.setSpecial(this.getSpecial()-3); // consumes 1 work experience
           return this + " pulls up to the interview in their Jaguar and takes the job from " + other + ". Doing " 
 		  + damage + " points of damage. They spend 3 " + this.getSpecialName() + " for unemployment expenses";   

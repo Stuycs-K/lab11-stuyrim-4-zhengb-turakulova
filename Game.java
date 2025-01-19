@@ -316,6 +316,16 @@ public class Game{
         //Enemy action choices go here!
         /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
         //YOUR CODE HERE
+		int attack = (int)(Math.random() * 2);
+		int which = (int) (Math.random() * party.size());
+		Adventurer currentOpp = enemies.get(whichOpponent);
+		String message;
+		if(attack == 0){
+			message = currentOpp.attack(party.get(which));
+		}else{
+			message = currentOpp.specialAttack(party.get(which));
+		}
+		TextBox(2, 41, 39, (message.length()/38)+1, message);
         /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
 

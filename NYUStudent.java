@@ -65,7 +65,7 @@ public class NYUStudent extends Adventurer{
         hp = other.getmaxHP() - other.getHP();
       }
       other.setHP(other.getHP() + hp);
-      other.setSpecial(other.getSpecial() - 2);
+      this.setSpecial(this.getSpecial() - 2);
     return this + " generously shares their money with everyone, boosting their special by  "+ (other.restoreSpecial(1)) 
 	+ " and HP by " + hp;
     }else{
