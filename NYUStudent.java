@@ -57,7 +57,7 @@ public class NYUStudent extends Adventurer{
       int duration = (int)(Math.random()*2) + 1; // paralyzes the opponent for the next 1-2 rounds
 
       other.setParalyzedD(duration);
-      return this + " flaunts their bank account, causing the opponent to fall into a depression for the next " 
+      return this + " flaunts their bank account, causing " + other + " to fall into a depression for the next " 
 	  + duration + " rounds";
     }
     else{

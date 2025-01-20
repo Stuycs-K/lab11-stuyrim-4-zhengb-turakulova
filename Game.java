@@ -102,70 +102,66 @@ public class Game{
 
     //return a random adventurer (choose between all available subclasses)
     //feel free to overload this method to allow specific names/stats.
-    public static Adventurer createRandomAdventurer(){
-      double choice = (int) (Math.random()*3);
-     
-      if (choice == 0) return new CodeWarrior();
-      if (choice == 1) return new NYUStudent();
-      else return new CSIntern();
-    }
+  public static Adventurer createRandomAdventurer(){
+    double choice = (int) (Math.random()*3);
+    
+    if (choice == 0) return new CodeWarrior();
+    if (choice == 1) return new NYUStudent();
+    else return new CSIntern();
+  }
 
-    public static Adventurer createRandomAdventurer(String name) {
-      Random rand = new Random();
-      int choice = rand.nextInt(0, 3);
-      if (choice == 0) return new CodeWarrior(name);
-      if (choice == 1) return new NYUStudent(name);
-      else return new CSIntern(name);
-    }
+  public static Adventurer createRandomAdventurer(String name) {
+    Random rand = new Random();
+    int choice = rand.nextInt(0, 3);
+    if (choice == 0) return new CodeWarrior(name);
+    if (choice == 1) return new NYUStudent(name);
+    else return new CSIntern(name);
+  }
 
-    /*Display a List of 2-4 adventurers on the rows row through row+3 (4 rows max)
-    *Should include Name HP and Special on 3 separate lines.
-    *Note there is one blank row reserved for your use if you choose.
-    *Format:
-    *Bob          Amy        Jun
-    *HP: 10       HP: 15     HP:19
-    *Caffeine: 20 Mana: 10   Snark: 1
-    * ***THIS ROW INTENTIONALLY LEFT BLANK***
-    */
-    public static void drawParty(ArrayList<Adventurer> party,int startRow, int startCol){
-      int width = 12;
+  /*Display a List of 2-4 adventurers on the rows row through row+3 (4 rows max)
+  *Should include Name HP and Special on 3 separate lines.
+  *Note there is one blank row reserved for your use if you choose.
+  *Format:
+  *Bob          Amy        Jun
+  *HP: 10       HP: 15     HP:19
+  *Caffeine: 20 Mana: 10   Snark: 1
+  * ***THIS ROW INTENTIONALLY LEFT BLANK***
+  */
+  public static void drawParty(ArrayList<Adventurer> party,int startRow, int startCol){
+    int width = 12;
 
-      TextBox(startRow+3, startCol, 38, 1, " ");
+    TextBox(startRow+3, startCol, 38, 1, " ");
+    
+    for (int a = 0; a < party.size(); a++) {
+      Adventurer current = party.get(a);
+      TextBox(startRow, startCol, width, 1, current.toString());
+      TextBox(startRow+1, startCol, width, 1, "HP: " + colorByPercent(current.getHP(), current.getmaxHP()));
+      TextBox(startRow+2, startCol, width, 1, current.getSpecialName() + ": " + current.getSpecial());
       
-      for (int a = 0; a < party.size(); a++) {
-        Adventurer current = party.get(a);
-        TextBox(startRow, startCol, width, 1, current.toString());
-        TextBox(startRow+1, startCol, width, 1, "HP: " + colorByPercent(current.getHP(), current.getmaxHP()));
-        TextBox(startRow+2, startCol, width, 1, current.getSpecialName() + ": " + current.getSpecial());
-        
-        startCol += (width+1);
-      }
-      /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-      //YOUR CODE HERE
-      /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+      startCol += (width+1);
     }
+    /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+    //YOUR CODE HERE
+    /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+  }
 
 
   //Use this to create a colorized number string based on the % compared to the max value.
   public static String colorByPercent(int hp, int maxHP){
     String output = String.format("%2s", hp+"")+"/"+String.format("%2s", maxHP+"");
     //COLORIZE THE OUTPUT IF HIGH/LOW:
-	double hpFraction = 100.0 * (hp / (double) maxHP);
+    double hpFraction = 100.0 * (hp / (double) maxHP);
     // under 25% : red
     // under 75% : yellow
     // otherwise : white
-	if(hpFraction < 25.0){
-		return Text.colorize(output, Text.RED);
-	}else if( hpFraction < 75.0){
-		return Text.colorize(output, Text.YELLOW);
-	}else{
-		return output;
-	}
+    if(hpFraction < 25.0){
+      return Text.colorize(output, Text.RED);
+    }else if( hpFraction < 75.0){
+      return Text.colorize(output, Text.YELLOW);
+    }else{
+      return output;
+    }
   }
-
-
-
-
 
   //Display the party and enemies
   //Do not write over the blank areas where text will appear.
@@ -215,7 +211,7 @@ public class Game{
     //If only 1 enemy is added it should be the boss class.
     //start with 1 boss and modify the code to allow 2-3 adventurers later.
     ArrayList<Adventurer>enemies = new ArrayList<Adventurer>();
-    enemies.add(createRandomAdventurer());
+    enemies.add(new Boss());
     /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
     //YOUR CODE HERE
     /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
@@ -253,7 +249,7 @@ public class Game{
       input = userInput(in);
 
       //example debug statment
-      // TextBox(31,2,100,78,"input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent );
+      
 
       //display event based on last turn's input
       if(partyTurn){
@@ -289,26 +285,33 @@ public class Game{
 
         //You should decide when you want to re-ask for user input
         //If no errors:
-        whichPlayer++;
+        
 
-
-        if(whichPlayer < party.size()){
-          //This is a player turn.
-          //Decide where to draw the following prompt:
-          String prompt = "BEnter command for "+party.get(whichPlayer)+": attack/special/quit";
-          TextBox(26, 2, 78, 2, prompt);
-          Text.go(27, 2);
-        }else{
-          //This is after the player's turn, and allows the user to see the enemy turn
-          //Decide where to draw the following prompt:
+        if (enemies.size() == 1) {
+          // will only let the party move 3 times if fighting a boss
+          if(whichPlayer < party.size()){
+            TextBox(31,2,100,78,"input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent );
+            String prompt = "BEnter command for "+party.get(whichPlayer)+": attack/special/quit";
+            TextBox(26, 2, 78, 2, prompt);
+            Text.go(27, 2);
+            whichPlayer++;
+          }
+          else{
+            TextBox(31,2,100,78,"input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent );
+            String prompt = "press enter to see monster's turn";
+            TextBox(26, 2, 78, 2, prompt);
+            partyTurn = false;
+            whichOpponent = 0;
+          }
+        }
+        else{
           String prompt = "press enter to see monster's turn";
           TextBox(26, 2, 78, 2, prompt);
-
           partyTurn = false;
           whichOpponent = 0;
         }
-        //done with one party member
-      }else{
+      }
+      else{
         //not the party turn!
 
 
@@ -316,16 +319,16 @@ public class Game{
         //Enemy action choices go here!
         /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
         //YOUR CODE HERE
-		int attack = (int)(Math.random() * 2);
-		int which = (int) (Math.random() * party.size());
-		Adventurer currentOpp = enemies.get(whichOpponent);
-		String message;
-		if(attack == 0){
-			message = currentOpp.attack(party.get(which));
-		}else{
-			message = currentOpp.specialAttack(party.get(which));
-		}
-		TextBox(2, 41, 39, (message.length()/38)+1, message);
+        int attack = (int) (Math.random() * 2);
+        int which = (int) (Math.random() * party.size());
+        Adventurer currentOpp = enemies.get(whichOpponent);
+        String message;
+        if(attack == 0){
+          message = currentOpp.attack(party.get(which));
+        }else{
+          message = currentOpp.specialAttack(party.get(which));
+        }
+        TextBox(2, 41, 39, (message.length()/38)+1, message);
         /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
 
@@ -337,8 +340,7 @@ public class Game{
 
       }//end of one enemy.
 
-      //modify this if statement. TODO: make it so that one character move per side
-      if(!partyTurn && whichOpponent >= enemies.size()){
+      if(!partyTurn){
         //THIS BLOCK IS TO END THE ENEMY TURN
         //It only triggers after the last enemy goes.
         whichPlayer = 0;
