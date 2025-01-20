@@ -227,6 +227,7 @@ public class Game{
     /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
     boolean partyTurn = true;
+    int enemyMoves = 0;
     int whichPlayer = 0;
     int whichOpponent = 0;
     int turn = 0;
@@ -285,7 +286,9 @@ public class Game{
 
         //You should decide when you want to re-ask for user input
         //If no errors:
-        
+
+        whichPlayer++;
+
 
         if (enemies.size() == 1) {
           // will only let the party move 3 times if fighting a boss
@@ -294,7 +297,6 @@ public class Game{
             String prompt = "BEnter command for "+party.get(whichPlayer)+": attack/special/quit";
             TextBox(26, 2, 78, 2, prompt);
             Text.go(27, 2);
-            whichPlayer++;
           }
           else{
             TextBox(31,2,100,78,"input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent );
@@ -336,13 +338,14 @@ public class Game{
         String prompt = "press enter to see next turn";
         TextBox(26, 2, 78, 2, prompt);
 
+        enemyMoves++;
         whichOpponent++;
 
       }//end of one enemy.
 
-      if(!partyTurn){
-        //THIS BLOCK IS TO END THE ENEMY TURN
-        //It only triggers after the last enemy goes.
+      if(!partyTurn && enemyMoves == 1){
+        //ends enemy's turn once 1 enemy has moved
+        enemyMoves = 0;
         whichPlayer = 0;
         turn++;
         partyTurn=true;
