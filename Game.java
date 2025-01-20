@@ -1,4 +1,6 @@
 import java.util.*;
+
+import javax.swing.event.SwingPropertyChangeSupport;
 public class Game{  
   private static final int WIDTH = 80;
   private static final int HEIGHT = 30;
@@ -6,9 +8,7 @@ public class Game{
   private static final int BORDER_BACKGROUND = Text.WHITE + Text.BACKGROUND;
 
   public static void main(String[] args) {
-    Text.clear();
     run();
-    Text.go(HEIGHT + 1, 1);
   }
 
   //Display the borders of your screen that will not change.
@@ -194,6 +194,19 @@ public class Game{
     return input;
   }
 
+
+  public static void drawResult(ArrayList<Adventurer> party, boolean win) {
+    String WIN = "__   _____  _   _   _     ___  ____  _____ _ \n\\ \\ / / _ \\| | | | | |   / _ \\/ ___|| ____| |\n \\ V / | | | | | | | |  | | | \\___ \\|  _| | |\n  | || |_| | |_| | | |__| |_| |___) | |___|_|\n  |_| \\___/ \\___/  |_____\\___/|____/|_____(_)";
+    String LOSE = "__   _____  _   _   _     ___  ____  _____ _ \n\\ \\ / / _ \\| | | | | |   / _ \\/ ___|| ____| |\n \\ V / | | | | | | | |  | | | \\___ \\|  _| | |\n  | || |_| | |_| | | |__| |_| |___) | |___|_|\n  |_| \\___/ \\___/  |_____\\___/|____/|_____(_)";
+    TextBox(1, 1, 80, 30, " ");
+    
+    Text.go(1, 1);
+    if (win) System.out.println(WIN);
+    else System.out.println(LOSE);
+
+    drawParty(party, 25, 30);
+  }
+ 
   public static void quit(){
     Text.reset();
     Text.showCursor();
@@ -363,6 +376,7 @@ public class Game{
 
 
     //After quit reset things:
+    drawResult(party, true);
     quit();
   }
 }
