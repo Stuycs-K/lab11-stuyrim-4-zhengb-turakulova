@@ -8,7 +8,12 @@ public class Game{
   private static final int BORDER_BACKGROUND = Text.WHITE + Text.BACKGROUND;
 
   public static void main(String[] args) {
-    run();
+    String stuff = String.format("%2s", 4+"")+"/"+String.format("%2s", 25+"");
+    stuff = Text.colorize(stuff, Text.RED);
+    String output = "HP:" + stuff;
+    System.out.println("\"" + output + "\"");
+    System.out.println(output.length());
+    // run();
   }
 
   //Display the borders of your screen that will not change.
@@ -53,10 +58,12 @@ public class Game{
   *@param height the number of rows
   */
   public static void TextBox(int row, int col, int width, int height, String text){
+    Text.hideCursor();
+
     int originalR = row, originalC = col, length = text.length();
     int blank = width * height - text.length();
 
-    if (blank < 0 && text.indexOf("\u001b[") == -1) {
+    if (blank < 0 && text.indexOf("/") == -1) {
       throw new IllegalArgumentException(Text.colorize("\"" + text + "\"" + " is too long for width: " + width + " and height: " + height, Text.BOLD, Text.RED + Text.BRIGHT, Text.UNDERLINE));
     }
     
@@ -97,9 +104,6 @@ public class Game{
 
   }
 
-
-
-
     //return a random adventurer (choose between all available subclasses)
     //feel free to overload this method to allow specific names/stats.
   public static Adventurer createRandomAdventurer(){
@@ -130,14 +134,31 @@ public class Game{
   public static void drawParty(ArrayList<Adventurer> party,int startRow, int startCol){
     int width = 12;
 
-    TextBox(startRow+3, startCol, 38, 1, " ");
     
     for (int a = 0; a < party.size(); a++) {
       Adventurer current = party.get(a);
       TextBox(startRow, startCol, width, 1, current.toString());
-      TextBox(startRow+1, startCol, width, 1, "HP: " + colorByPercent(current.getHP(), current.getmaxHP()));
+      TextBox(startRow+1, startCol, width, 1, "HP:" + colorByPercent(current.getHP(), current.getmaxHP()));
       TextBox(startRow+2, startCol, width, 1, current.getSpecialName() + ": " + current.getSpecial());
       
+      String status = "";
+    
+      if (current.isDead()) {
+        status += Text.colorize("Dead", Text.RED, Text.BOLD);
+      }
+      else {
+        if (current.isParalyzed()) {
+          status += Text.colorize("para: " + current.getParalyzedD(), Text.YELLOW, Text.BOLD);
+        }
+        if (current.isBuffed()) {
+          status += Text.colorize(", buff: " + current.getBuffedD(), Text.BLUE, Text.BOLD);
+        }
+      }
+     
+      TextBox(startRow+3, startCol, 7, 1, status);
+      Text.go(31, 2);
+      System.out.println("\"" + status + "\"" + status.length());
+
       startCol += (width+1);
     }
     /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
@@ -167,27 +188,29 @@ public class Game{
   //Do not write over the blank areas where text will appear.
   //Place the cursor at the place where the user will by typing their input at the end of this method.
   public static void drawScreen(ArrayList<Adventurer> party, ArrayList<Adventurer> enemies){
+
     drawBackground();
     // drawBackground()
 
     drawParty(party, 21, 2);
 
     //draw player party
-
+    Text.hideCursor();
     drawParty(enemies, 21, 41);
 
     //draw enemy party
 
-    Text.go(27, 2);
-    Text.showCursor();
+    // Text.go(27, 2);
+    
 
   }
 
   public static String userInput(Scanner in){
+    Text.showCursor();
       //Move cursor to prompt location
+      Text.go(27, 2);
 
       //show cursor
-
       String input = in.nextLine();
 
       //clear the text that was written
@@ -199,7 +222,7 @@ public class Game{
     String WIN = "__   _____  _   _   _     ___  ____  _____ _ \n\\ \\ / / _ \\| | | | | |   / _ \\/ ___|| ____| |\n \\ V / | | | | | | | |  | | | \\___ \\|  _| | |\n  | || |_| | |_| | | |__| |_| |___) | |___|_|\n  |_| \\___/ \\___/  |_____\\___/|____/|_____(_)";
     String LOSE = "__   _____  _   _   _     ___  ____  _____ _ \n\\ \\ / / _ \\| | | | | |   / _ \\/ ___|| ____| |\n \\ V / | | | | | | | |  | | | \\___ \\|  _| | |\n  | || |_| | |_| | | |__| |_| |___) | |___|_|\n  |_| \\___/ \\___/  |_____\\___/|____/|_____(_)";
     TextBox(1, 1, 80, 30, " ");
-    
+
     Text.go(1, 1);
     if (win) System.out.println(WIN);
     else System.out.println(LOSE);
@@ -248,6 +271,7 @@ public class Game{
     Scanner in = new Scanner(System.in);
     //Draw the window border
 
+
     //You can add parameters to draw screen!
     drawScreen(party, enemies);//initial state.
 
@@ -295,6 +319,9 @@ public class Game{
           /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
         }
 
+        Text.hideCursor();
+
+
         TextBox(2, 2, 38, (message.length() / 38) + 1, message);
 
         //You should decide when you want to re-ask for user input
@@ -306,13 +333,12 @@ public class Game{
         if (enemies.size() == 1) {
           // will only let the party move 3 times if fighting a boss
           if(whichPlayer < party.size()){
-            TextBox(31,2,100,78,"input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent );
+            // TextBox(31,2,100,78,"input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent );
             String prompt = "BEnter command for "+party.get(whichPlayer)+": attack/special/quit";
             TextBox(26, 2, 78, 2, prompt);
-            Text.go(27, 2);
+            // Text.go(27, 2);
           }
           else{
-            TextBox(31,2,100,78,"input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent );
             String prompt = "press enter to see monster's turn";
             TextBox(26, 2, 78, 2, prompt);
             partyTurn = false;

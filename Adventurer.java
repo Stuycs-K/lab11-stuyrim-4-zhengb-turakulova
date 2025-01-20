@@ -1,6 +1,6 @@
-import java.util.Random;
+import java.util.*;
 public abstract class Adventurer{
-  private int paralyzedDuration, buffedDuration;
+  private int[] statuses = {0, 0, 0}; // paralyzed, buffed, dead
   private String name;
   private int HP,maxHP;
 
@@ -90,12 +90,20 @@ public abstract class Adventurer{
     return maxHP;
   }
 
+  public int[] getStatuses() {
+    return statuses;
+  }
+
   public int getParalyzedD() {
-    return paralyzedDuration;
+    return statuses[0];
   }
 
   public int getBuffedD(){
-    return buffedDuration;
+    return statuses[1];
+  }
+
+  public int getDead() {
+    return statuses[2];
   }
 
   public void setmaxHP(int newMax){
@@ -113,11 +121,15 @@ public abstract class Adventurer{
   }
 
   public void setParalyzedD(int n) {
-    this.paralyzedDuration = n;
+    this.statuses[0] = n;
   }
 
   public void setBuffedD(int n){
-    this.buffedDuration = n;
+    this.statuses[1] = n;
+  }
+
+  public void setDead() {
+    this.statuses[2] = 1;
   }
 
   public boolean isParalyzed() {
@@ -126,6 +138,9 @@ public abstract class Adventurer{
 
   public boolean isBuffed(){
     return getBuffedD() > 0;
+  }
+  public boolean isDead() {
+    return getDead() == 1;
   }
 
 }
