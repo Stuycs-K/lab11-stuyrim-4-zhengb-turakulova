@@ -15,6 +15,12 @@ Make a clear list of features that work/dont work
 
 :beetle: This is a bug that affects the game.
 
+  :white_check_mark: play with 3 different types adventurers
+  :question: play against 1-3 randomly chosen adventurer opponents
+  :white_check_mark: use attack/special operations on your opponents
+  :white_check_mark: use support operations on your team
+  :question: program ends when the user choosed to quit, or all enemies is defeated, or the entire party is defeated. A win/lose screen is useful here.
+  :white_check_mark: display the results of the attack/special/support inside your border. Do not print things at the bottom of the screen or it will scroll.
 
 ## Adventurer Subclasses
 
