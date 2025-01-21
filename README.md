@@ -15,18 +15,24 @@ Make a clear list of features that work/dont work
 
 :beetle: This is a bug that affects the game.
 
+
 :white_check_mark: play with 3 different types adventurers
 
-:question: play against 1-3 randomly chosen adventurer opponents
+:white_check_mark: play against 1-3 randomly chosen adventurer opponents
 
 :white_check_mark: use attack/special operations on your opponents
 
 :white_check_mark: use support operations on your team
 
-:question: program ends when user quits, all enemies are defeated, or the entire party is defeated. Win/Lose Screen.
+:white_check_mark: program ends when user quits, all enemies are defeated, or when user party is defeated. Win/Lose Screen.
 
 :white_check_mark: display results of attack/special/support inside border. 
 
+:ballot_box_with_check: differing turn sequence depending on if there are one or multiple enemies
+
+:ballot_box_with_check: Error checking for input values with reprompting until a correct input
+
+:ballot_box_with_check: fancy borders with unicode characters
 
 ## Adventurer Subclasses
 
@@ -43,10 +49,10 @@ Max Special: 10
 - Attack
   - Normal: deals 1 to 2 damage, and passively restores 1 special to attacker.
   - Special: The exchange student flaunts his bank account, rendering the opponent immobile for the next 1-2 rounds.
-	- Consumes 1 daddy’s money.
+	- Consumes 3 daddy’s money.
 - Ally Support
   - Description: The exchange student generously shares his money with ally, boosting their special by 1 and health by 3.
-  - Consumes 2 daddy’s money.
+  - Consumes 3 daddy’s money.
 - Self Support
   - Description: The exchange student receives his weekly $10,000 deposit from his dad, boosting his health by 4.
   - Consumes 1 daddy’s money, but can only be used if daddy’s money is less than 3.

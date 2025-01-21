@@ -52,8 +52,8 @@ public class NYUStudent extends Adventurer{
 		this.setParalyzedD(this.getParalyzedD() - 1);
 		return this + " is currently too depressed to attack, and will still be for the next " + this.getParalyzedD() + " rounds";
 	}
-    if(getSpecial() >= 1){
-      setSpecial(getSpecial()-1); // consumes 1 daddy's money
+    if(getSpecial() >= 3){
+      setSpecial(getSpecial()-3); // consumes 1 daddy's money
       int duration = (int)(Math.random()*2) + 1; // paralyzes the opponent for the next 1-2 rounds
 
       other.setParalyzedD(duration);
@@ -67,17 +67,17 @@ public class NYUStudent extends Adventurer{
   }
   //
   public String support(Adventurer other){
-    if(this.getSpecial() > 1){
+    if(this.getSpecial() >= 3){
       int hp = 3;
       if(other.getHP() + hp > other.getmaxHP()){
         hp = other.getmaxHP() - other.getHP();
       }
       other.setHP(other.getHP() + hp);
-      this.setSpecial(this.getSpecial() - 2);
+      this.setSpecial(this.getSpecial() - 3);
     return this + " generously shares their money with "+ other +", boosting their special by  "+ (other.restoreSpecial(1)) 
 	+ " and HP by " + hp;
     }else{
-      return this + " needs at least 2 " + this.getSpecialName() + " to use ally support";
+      return this + " needs at least 3 " + this.getSpecialName() + " to use ally support";
     } //+ other.restoreSpecial(5)+" "+other.getSpecialName();
   }
 
