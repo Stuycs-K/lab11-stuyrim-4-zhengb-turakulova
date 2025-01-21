@@ -8,13 +8,11 @@ public class Game{
   private static final int BORDER_BACKGROUND = Text.WHITE + Text.BACKGROUND;
 
   public static void main(String[] args) {
-    // String stuff = String.format("%2s", 4+"")+"/"+String.format("%2s", 25+"");
-    // stuff = Text.colorize(stuff, Text.YELLOW);
-    // System.out.println(stuff);
-    // // String output = "HP:" + stuff;
-    // // System.out.println("\"" + output + "\"");
-    // System.out.println(stuff.length());
-    // System.out.println("para: 2".length());
+    /*String stuff = String.format("%2s", 4+"")+"/"+String.format("%2s", 25+"");
+    stuff = Text.colorize(stuff, Text.RED);
+    String output = "HP:" + stuff;
+    System.out.println("\"" + output + "\"");
+    System.out.println(output.length());*/
     run();
   }
 
@@ -156,9 +154,9 @@ public class Game{
         }
       }
      
-      TextBox(startRow+3, startCol, 7, 1, status);
-      Text.go(31, 2);
-      System.out.println("\"" + status + "\"" + status.length());
+      //TextBox(startRow+3, startCol, 7, 1, status);
+     // Text.go(31, 2);
+      //System.out.println("\"" + status + "\"" + status.length());
 
       startCol += (width+1);
     }
@@ -217,7 +215,18 @@ public class Game{
       //clear the text that was written
     return input;
   }
-
+	
+	  //checl given list of adventurers for at least one surviving member hp>0
+  public static boolean checkLiving(ArrayList<Adventurer> list){
+	  boolean live = false;
+	  for(int i = 0; i < list.size(); i++){
+		  if(list.get(i).getHP() > 0){
+			  live = true;
+		  }
+		  
+	  }
+	  return live;
+  }
 
   public static void drawResult(ArrayList<Adventurer> party, boolean win) {
     String WIN = "__   _____  _   _  __        _____ _   _ _ \n\\ \\ / / _ \\| | | | \\ \\      / /_ _| \\ | | |\n \\ V / | | | | | |  \\ \\ /\\ / / | ||  \\| | |\n  | || |_| | |_| |   \\ V  V /  | || |\\  |_|\n  |_| \\___/ \\___/     \\_/\\_/  |___|_| \\_(_)";
@@ -282,6 +291,7 @@ public class Game{
     String input = "";//blank to get into the main loop.
     boolean win = false;
     Scanner in = new Scanner(System.in);
+	boolean win = false; //for end
     //Draw the window border
 
 
@@ -301,7 +311,7 @@ public class Game{
 
       //example debug statment
       
-      if(input.split(" ").length == 2 || !partyTurn){
+	  if(input.split(" ").length == 2 || !partyTurn){
       //display event based on last turn's input
       if(partyTurn){
         

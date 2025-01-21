@@ -27,6 +27,7 @@ Make a clear list of features that work/dont work
 
 :white_check_mark: display results of attack/special/support inside border. 
 
+
 ## Adventurer Subclasses
 
 ### NYU Exchange Student
