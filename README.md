@@ -83,9 +83,9 @@ Special max: 16
 
 #### Abilities
 - Self Support: check bank account
-  - Health + 3 special + 2
+  - Health + 4 special + 2
 - Attack:
-  - Normal: deals 1 to 2 damage, and passively restores 1 special to attacker.
+  - Normal: deals 2 to 4 damage, and passively restores 1 special to attacker.
   - Special: pass interview and take other’s job
-    - Damage 4
+    - Damage 4-10
     - Consumes: 3 savings for unemployment expenditures

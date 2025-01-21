@@ -222,7 +222,7 @@ public class Game{
 	  for(int i = 0; i < list.size(); i++){
 		  if(list.get(i).getHP() > 0){
 			  live = true;
-		  }// 
+		  }
 	  }
 	  return live;
   }
@@ -270,20 +270,23 @@ public class Game{
     //If only 1 enemy is added it should be the boss class.
     //start with 1 boss and modify the code to allow 2-3 adventurers later.
     
-    int num = (int)(Math.random()*2) + 2; // 2 to 3
+    int num = (int)(Math.random()*3) + 1; // 1 to 3
 
     ArrayList<Adventurer> party = new ArrayList<Adventurer>();
     ArrayList<Adventurer>enemies = new ArrayList<Adventurer>();
 
-    for (int i = 0; i < num; i++) {
-      party.add(createRandomAdventurer());
-    }
+    
 
-    if(num == 3){
+    if(num == 1){
       enemies.add(new Boss());
+      for (int i = 0; i < 3; i++) {
+        party.add(createRandomAdventurer());
+      }
     }
-
     else{
+      for (int i = 0; i < num; i++) {
+        party.add(createRandomAdventurer());
+      }
       for (int i = 0; i < num; i++) {
         enemies.add(createRandomAdventurer());
       }
@@ -302,7 +305,6 @@ public class Game{
     int whichOpponent = 0;
     int turn = 0;
     String input = "";//blank to get into the main loop.
-    boolean win = false;
     Scanner in = new Scanner(System.in);
 	
     //Draw the window border
@@ -316,7 +318,7 @@ public class Game{
     //display this prompt at the start of the game.
     String preprompt = "AEnter command for "+party.get(whichPlayer)+": attack/special/quit";
     TextBox(26, 2, 78, 2, preprompt);
-    Text.go(27, 2);// have u tested
+    Text.go(27, 2);// have u tested party is size 0 for some reason
 
     while(! (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit"))){
       //Read user input
@@ -325,56 +327,68 @@ public class Game{
       if (input.equals("q") || input.equals("quit")) { 
         quit();
       }
-      
-      if (partyTurn) {
-        int length = input.split(" ").length;
-        int t = 0;
-        if (length != 2) {
-          while (length != 2) {
-            TextBox(27, 2, 78, 2, "aincorrect input, please enter in format: action <target index 0-2>");
-            input = userInput(in); 
-            length = input.split(" ").length;
-            // ur updating the input.
-            // it is
-          }
-          
-        }
-        t = Integer.parseInt(input.substring(input.length() - 1)); //check for length == 2 before parsing
-
-        while(t >= party.size()){//how about a  if statement outside the nested while for length
-          TextBox(27, 2, 78, 2, "bincorrect input, please enter in format: action <target index 0-2>");
-          input = userInput(in); // wait no
-          t = Integer.parseInt(input.substring(input.length() - 1));
-          // no the error is when we press enter to see the monster's turn it tries to evalulate t
-        } // 
-      }
 
       //is the format good on your end when java ing  u have to expand the terminal
 
       
       //example debug statment
       
-      //display event based on last turn's input
+      //display event based on last turn's nvm ill just add a few points to boss
       if(partyTurn){
+        // error checking order:
+        // checks if length is 2, so in format: action, target
+        // checks if target is valid for party size
+        // checks if target is alive
         
+        int length = input.split(" ").length;
+        int target = 0;
+
+        while (length != 2) {
+          TextBox(27, 2, 78, 2, "aincorrect input, please enter in format: action <target index 0-2>");
+          input = userInput(in); 
+          length = input.split(" ").length;
+        }
+
+        target = Integer.parseInt(input.substring(input.length() - 1));
+        
+        while(target >= party.size()){//how about a  if statement outside the nested while for length
+          TextBox(27, 2, 78, 2, "bincorrect input, please enter in format: action <target index 0-2>");
+          input = userInput(in); // wait no
+          target = Integer.parseInt(input.substring(input.length() - 1));
+        }
+
         Adventurer current = party.get(whichPlayer);
         String message = "";
-        int target = Integer.parseInt(input.substring(input.length() - 1));
 
         //Process user input for the last Adventurer:
         if(input.startsWith("attack") || input.startsWith("a")){
           /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
           //YOUR CODE HERE
+          while (enemies.get(target).isDead()) {
+            TextBox(26, 2, 78, 2, "Please enter a new target as " + enemies.get(target)  + " is dead");
+            input = userInput(in); 
+            target = Integer.parseInt(input.substring(input.length() - 1));
+          }
           message = current.attack(enemies.get(target));
           /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
         }
         else if(input.startsWith("special") || input.startsWith("sp")){
           /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
           //YOUR CODE HERE
+          while (enemies.get(target).isDead()) {
+            TextBox(26, 2, 78, 2, "Please enter a new target as " + enemies.get(target)  + " is dead");
+            input = userInput(in); 
+            target = Integer.parseInt(input.substring(input.length() - 1));
+          }
           message = current.specialAttack(enemies.get(target));
           /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
         }
         else if(input.startsWith("su ") || input.startsWith("support ")){
+          while (party.get(target).isDead()) {
+            TextBox(26, 2, 78, 2, "Please enter a new target as " + party.get(target)  + " is dead");
+            input = userInput(in); 
+            target = Integer.parseInt(input.substring(input.length() - 1));
+          }
           if (party.get(target) == current) message = current.support();
           else message = current.support(party.get(target));
           //"support 0" or "su 0" or "su 2" etc.
@@ -414,7 +428,7 @@ public class Game{
           String prompt = "press enter to see monster's turn";
           TextBox(26, 2, 78, 2, prompt);
           partyTurn = false;
-          whichOpponent = 0;
+          whichOpponent %= enemies.size();
         }
       }
       else{
@@ -425,25 +439,49 @@ public class Game{
         //Enemy action choices go here!
         /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
         //YOUR CODE HERE
-        int attack = (int) (Math.random() * 2);
-        int which = (int) (Math.random() * party.size());
         Adventurer currentOpp = enemies.get(whichOpponent);
-        String message;
-        if(attack == 0){
-          message = currentOpp.attack(party.get(which));
-        }else{
-          message = currentOpp.specialAttack(party.get(which));
+
+        if (currentOpp.isDead()) {
+          whichOpponent++;
+          whichOpponent %= enemies.size();
         }
-        TextBox(2, 41, 39, (message.length()/38)+1, message);
-        /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+        else {
+          int attack = (int) (Math.random() * 4);
+          int which = (int) (Math.random() * party.size());
+          //party check for isdead
+          if(party.get(which).isDead()){
+            which++;
+            which %= party.size();
+          }
+          
+          
+          String message;
+          if(attack == 0){
+            message = currentOpp.attack(party.get(which));
+          }else if(attack == 1){
+            message = currentOpp.specialAttack(party.get(which)); // ???
+          }else if(attack == 2){ // we could add it to the initial if partyTurn if  isDead is who is dead
+            message = currentOpp.support();
+          }else{
+            int rand = (int) (Math.random()*enemies.size());
+            Adventurer supportWho = enemies.get(rand);
+            while (supportWho.isDead()) {
+              rand = (int) (Math.random()*enemies.size());
+              supportWho = enemies.get(rand);
+            }
+            message = currentOpp.support(supportWho);
+          }
+          TextBox(2, 41, 39, 5, message);
+          /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
 
-        //Decide where to draw the following prompt:
-        String prompt = "press enter to see next turn";
-        TextBox(26, 2, 78, 2, prompt);
+          //Decide where to draw the following prompt:
+          String prompt = "press enter to see next turn";
+          TextBox(26, 2, 78, 2, prompt);
 
-        enemyMoves++;
-        whichOpponent++;
+          enemyMoves++;
+          whichOpponent++;
+        }
 
       }//end of one enemy.
 
@@ -460,15 +498,24 @@ public class Game{
       }
 
       //display the updated screen after input has been processed.
-      drawScreen(party, enemies);
-  
-    
+
       if(checkDead(party)){
         drawResult(party, false);
       }
       if(checkDead(enemies)){
         drawResult(party, true);
       }
+
+      for (int i = 0; i < party.size(); i++) {
+        if (party.get(i).isDead()) {
+          party.remove(i);
+        }
+      }
+
+      drawScreen(party, enemies);
+  
+    
+      
 	 
     } //end of main game loop
     quit();

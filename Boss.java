@@ -37,21 +37,21 @@ public class Boss extends Adventurer {
 			this.setParalyzedD(this.getParalyzedD() - 1);
 			return this + " is currently too depressed to attack, and will still be for the next " + this.getParalyzedD() + " rounds";
 		}
-		int damage = (int)(Math.random()*2)+1; // 1 to 2 damage
+		int damage = (int)(Math.random()*3)+2; // 2 to 4 damage
 		other.applyDamage(damage);
 		restoreSpecial(1); // passively restore 1 special
 		return this + " attacked "+ other + " and dealt "+ damage +
 		" points of damage. They then pick up the " + this.restoreSpecial(1) + " money " + other + " dropped";
 	  }
 
-      //4 points of damage. Consumes 2 work experience
+      //4 to 10 points of damage. Consumes 2 work experience
       public String specialAttack(Adventurer other){
 		if(this.getParalyzedD() > 0){
 			this.setParalyzedD(this.getParalyzedD() - 1);
 			return this + " is currently too depressed to attack, and will still be for the next " + this.getParalyzedD() + " rounds";
 		}
         if(this.getSpecial() > 2){
-          int damage = 4;
+          int damage =  (int) (Math.random()*7)+4; //4 - 10 damage
           other.applyDamage(damage);
 		  this.setSpecial(this.getSpecial()-3); // consumes 1 work experience
           return this + " pulls up to the interview in their Jaguar and takes the job from " + other + ". Doing " 
@@ -67,9 +67,9 @@ public class Boss extends Adventurer {
 		  return this + " is the Boss, so they support themself like a boss: " + this.support();
       }
 
-      /*Health + 3 special + 2 */
+      /*Health + 4 special + 2 */
       public String support(){
-    		int hp = 3;
+    		int hp = 4;
     		if(getHP() + hp > getmaxHP()){
     		    hp = getmaxHP() - getHP();
     		}
