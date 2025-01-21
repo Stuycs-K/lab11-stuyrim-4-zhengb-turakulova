@@ -222,8 +222,7 @@ public class Game{
 	  for(int i = 0; i < list.size(); i++){
 		  if(list.get(i).getHP() > 0){
 			  live = true;
-		  }
-		  
+		  }// 
 	  }
 	  return live;
   }
@@ -253,8 +252,11 @@ public class Game{
  
   public static void quit(){
     Text.reset();
+    TextBox(1, 1, 80, 30, " ");
+    System.out.print("Thanks for Playing!");
     Text.showCursor();
     Text.go(32,1);
+    System.exit(0);
   }
 
   public static void run(){
@@ -267,18 +269,29 @@ public class Game{
     //Make an ArrayList of Adventurers and add 1-3 enemies to it.
     //If only 1 enemy is added it should be the boss class.
     //start with 1 boss and modify the code to allow 2-3 adventurers later.
-    ArrayList<Adventurer>enemies = new ArrayList<Adventurer>();
-    enemies.add(new Boss());
-    /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-    //YOUR CODE HERE
-    /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    
+    int num = (int)(Math.random()*2) + 2; // 2 to 3
 
-    //Adventurers you control:
-    //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
     ArrayList<Adventurer> party = new ArrayList<Adventurer>();
-    for (int i = 0; i < 3; i++) {
+    ArrayList<Adventurer>enemies = new ArrayList<Adventurer>();
+
+    for (int i = 0; i < num; i++) {
       party.add(createRandomAdventurer());
     }
+
+    if(num == 3){
+      enemies.add(new Boss());
+    }
+
+    else{
+      for (int i = 0; i < num; i++) {
+        enemies.add(createRandomAdventurer());
+      }
+    } 
+    
+    //Adventurers you control:
+    //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
+    
     /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
     //YOUR CODE HERE
     /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
@@ -291,7 +304,7 @@ public class Game{
     String input = "";//blank to get into the main loop.
     boolean win = false;
     Scanner in = new Scanner(System.in);
-	boolean win = false; //for end
+	
     //Draw the window border
 
 
@@ -303,15 +316,44 @@ public class Game{
     //display this prompt at the start of the game.
     String preprompt = "AEnter command for "+party.get(whichPlayer)+": attack/special/quit";
     TextBox(26, 2, 78, 2, preprompt);
-    Text.go(27, 2);
+    Text.go(27, 2);// have u tested
 
     while(! (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit"))){
       //Read user input
       input = userInput(in);
+      // check if t is less than the number of party members to not check input if its !partyTurn  why !partyTurn oh ic
+      if (input.equals("q") || input.equals("quit")) { 
+        quit();
+      }
+      
+      if (partyTurn) {
+        int length = input.split(" ").length;
+        int t = 0;
+        if (length != 2) {
+          while (length != 2) {
+            TextBox(27, 2, 78, 2, "aincorrect input, please enter in format: action <target index 0-2>");
+            input = userInput(in); 
+            length = input.split(" ").length;
+            // ur updating the input.
+            // it is
+          }
+          
+        }
+        t = Integer.parseInt(input.substring(input.length() - 1)); //check for length == 2 before parsing
 
+        while(t >= party.size()){//how about a  if statement outside the nested while for length
+          TextBox(27, 2, 78, 2, "bincorrect input, please enter in format: action <target index 0-2>");
+          input = userInput(in); // wait no
+          t = Integer.parseInt(input.substring(input.length() - 1));
+          // no the error is when we press enter to see the monster's turn it tries to evalulate t
+        } // 
+      }
+
+      //is the format good on your end when java ing  u have to expand the terminal
+
+      
       //example debug statment
       
-	  if(input.split(" ").length == 2 || !partyTurn){
       //display event based on last turn's input
       if(partyTurn){
         
@@ -345,7 +387,7 @@ public class Game{
         Text.hideCursor();
 
 
-        TextBox(2, 2, 38, (message.length() / 38) + 1, message);
+        TextBox(2, 2, 38, 5, message);
 
         //You should decide when you want to re-ask for user input
         //If no errors:
@@ -408,7 +450,7 @@ public class Game{
       if(!partyTurn && enemyMoves == 1){
         //ends enemy's turn once 1 enemy has moved
         enemyMoves = 0;
-        whichPlayer = 0;
+        whichPlayer %= party.size();
         turn++;
         partyTurn=true;
         //display this prompt before player's turn
@@ -419,29 +461,16 @@ public class Game{
 
       //display the updated screen after input has been processed.
       drawScreen(party, enemies);
-
-    }
-    else if(!(input.equals("q") || input.equals("quit"))){
-		  TextBox(27, 2, 78, 2, "incorrect input, please enter in format: action <target index 0-2>");
-		  
-		  input = "q";
-	  }
+  
+    
+      if(checkDead(party)){
+        drawResult(party, false);
+      }
+      if(checkDead(enemies)){
+        drawResult(party, true);
+      }
 	 
-	 if(checkDead(party)){
-    drawResult(party, false);
-	 }
-   if(checkDead(enemies)){
-    drawResult(party, true);
-	 }
-
-
-    }//end of main game loop
-
-
-    //After quit reset things:
-    // if(!(input.equals("q") || input.equals("quit"))){
-    //   drawResult(party, win);
-    // }
+    } //end of main game loop
     quit();
-  }
-}
+  }//the parse int for num should only run if theres a spce in input since q doesnt have a #
+} // okay imma run
