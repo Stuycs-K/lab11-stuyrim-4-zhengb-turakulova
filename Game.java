@@ -8,12 +8,14 @@ public class Game{
   private static final int BORDER_BACKGROUND = Text.WHITE + Text.BACKGROUND;
 
   public static void main(String[] args) {
-    String stuff = String.format("%2s", 4+"")+"/"+String.format("%2s", 25+"");
-    stuff = Text.colorize(stuff, Text.RED);
-    String output = "HP:" + stuff;
-    System.out.println("\"" + output + "\"");
-    System.out.println(output.length());
-    // run();
+    // String stuff = String.format("%2s", 4+"")+"/"+String.format("%2s", 25+"");
+    // stuff = Text.colorize(stuff, Text.YELLOW);
+    // System.out.println(stuff);
+    // // String output = "HP:" + stuff;
+    // // System.out.println("\"" + output + "\"");
+    // System.out.println(stuff.length());
+    // System.out.println("para: 2".length());
+    run();
   }
 
   //Display the borders of your screen that will not change.
@@ -62,9 +64,8 @@ public class Game{
 
     int originalR = row, originalC = col, length = text.length();
     int blank = width * height - text.length();
-
-    if (blank < 0 && text.indexOf("/") == -1) {
-      throw new IllegalArgumentException(Text.colorize("\"" + text + "\"" + " is too long for width: " + width + " and height: " + height, Text.BOLD, Text.RED + Text.BRIGHT, Text.UNDERLINE));
+    if (blank < 0 && text.indexOf("\u001b[") == -1) {
+      throw new IllegalArgumentException(Text.colorize("\"" + text + "\"" + " with length " + text.length() + " is too long for width: " + width + " and height: " + height, Text.BOLD, Text.RED + Text.BRIGHT, Text.UNDERLINE));
     }
     
     if (text.length() > width) {
@@ -148,10 +149,10 @@ public class Game{
       }
       else {
         if (current.isParalyzed()) {
-          status += Text.colorize("para: " + current.getParalyzedD(), Text.YELLOW, Text.BOLD);
+          status += Text.colorize("para: " + current.getParalyzedD(), Text.YELLOW);
         }
         if (current.isBuffed()) {
-          status += Text.colorize(", buff: " + current.getBuffedD(), Text.BLUE, Text.BOLD);
+          status += Text.colorize(", buff: " + current.getBuffedD(), Text.BLUE);
         }
       }
      
@@ -219,7 +220,7 @@ public class Game{
 
 
   public static void drawResult(ArrayList<Adventurer> party, boolean win) {
-    String WIN = "__   _____  _   _   _     ___  ____  _____ _ \n\\ \\ / / _ \\| | | | | |   / _ \\/ ___|| ____| |\n \\ V / | | | | | | | |  | | | \\___ \\|  _| | |\n  | || |_| | |_| | | |__| |_| |___) | |___|_|\n  |_| \\___/ \\___/  |_____\\___/|____/|_____(_)";
+    String WIN = "__   _____  _   _  __        _____ _   _ _ \n\\ \\ / / _ \\| | | | \\ \\      / /_ _| \\ | | |\n \\ V / | | | | | |  \\ \\ /\\ / / | ||  \\| | |\n  | || |_| | |_| |   \\ V  V /  | || |\\  |_|\n  |_| \\___/ \\___/     \\_/\\_/  |___|_| \\_(_)";
     String LOSE = "__   _____  _   _   _     ___  ____  _____ _ \n\\ \\ / / _ \\| | | | | |   / _ \\/ ___|| ____| |\n \\ V / | | | | | | | |  | | | \\___ \\|  _| | |\n  | || |_| | |_| | | |__| |_| |___) | |___|_|\n  |_| \\___/ \\___/  |_____\\___/|____/|_____(_)";
     TextBox(1, 1, 80, 30, " ");
 
@@ -227,7 +228,18 @@ public class Game{
     if (win) System.out.println(WIN);
     else System.out.println(LOSE);
 
-    drawParty(party, 25, 30);
+    drawParty(party, 15, 1);
+  }
+
+  public static boolean checkDead(ArrayList<Adventurer> list){
+	  boolean dead = true;
+	  for(int i = 0; i < list.size(); i++){
+		  if(list.get(i).getHP() > 0){
+			  dead = false;
+		  }
+		  
+	  }
+	  return dead;
   }
  
   public static void quit(){
@@ -268,6 +280,7 @@ public class Game{
     int whichOpponent = 0;
     int turn = 0;
     String input = "";//blank to get into the main loop.
+    boolean win = false;
     Scanner in = new Scanner(System.in);
     //Draw the window border
 
@@ -288,7 +301,7 @@ public class Game{
 
       //example debug statment
       
-
+      if(input.split(" ").length == 2 || !partyTurn){
       //display event based on last turn's input
       if(partyTurn){
         
@@ -397,12 +410,28 @@ public class Game{
       //display the updated screen after input has been processed.
       drawScreen(party, enemies);
 
+    }
+    else if(!(input.equals("q") || input.equals("quit"))){
+		  TextBox(27, 2, 78, 2, "incorrect input, please enter in format: action <target index 0-2>");
+		  
+		  input = "q";
+	  }
+	 
+	 if(checkDead(party)){
+    drawResult(party, false);
+	 }
+   if(checkDead(enemies)){
+    drawResult(party, true);
+	 }
+
 
     }//end of main game loop
 
 
     //After quit reset things:
-    drawResult(party, true);
+    // if(!(input.equals("q") || input.equals("quit"))){
+    //   drawResult(party, win);
+    // }
     quit();
   }
 }
