@@ -8,12 +8,12 @@ public class Game{
   private static final int BORDER_BACKGROUND = Text.WHITE + Text.BACKGROUND;
 
   public static void main(String[] args) {
-    String stuff = String.format("%2s", 4+"")+"/"+String.format("%2s", 25+"");
+    /*String stuff = String.format("%2s", 4+"")+"/"+String.format("%2s", 25+"");
     stuff = Text.colorize(stuff, Text.RED);
     String output = "HP:" + stuff;
     System.out.println("\"" + output + "\"");
-    System.out.println(output.length());
-    // run();
+    System.out.println(output.length());*/
+    run();
   }
 
   //Display the borders of your screen that will not change.
@@ -155,9 +155,9 @@ public class Game{
         }
       }
      
-      TextBox(startRow+3, startCol, 7, 1, status);
-      Text.go(31, 2);
-      System.out.println("\"" + status + "\"" + status.length());
+      //TextBox(startRow+3, startCol, 7, 1, status);
+     // Text.go(31, 2);
+      //System.out.println("\"" + status + "\"" + status.length());
 
       startCol += (width+1);
     }
@@ -216,7 +216,18 @@ public class Game{
       //clear the text that was written
     return input;
   }
-
+	
+	  //checl given list of adventurers for at least one surviving member hp>0
+  public static boolean checkLiving(ArrayList<Adventurer> list){
+	  boolean live = false;
+	  for(int i = 0; i < list.size(); i++){
+		  if(list.get(i).getHP() > 0){
+			  live = true;
+		  }
+		  
+	  }
+	  return live;
+  }
 
   public static void drawResult(ArrayList<Adventurer> party, boolean win) {
     String WIN = "__   _____  _   _   _     ___  ____  _____ _ \n\\ \\ / / _ \\| | | | | |   / _ \\/ ___|| ____| |\n \\ V / | | | | | | | |  | | | \\___ \\|  _| | |\n  | || |_| | |_| | | |__| |_| |___) | |___|_|\n  |_| \\___/ \\___/  |_____\\___/|____/|_____(_)";
@@ -269,6 +280,7 @@ public class Game{
     int turn = 0;
     String input = "";//blank to get into the main loop.
     Scanner in = new Scanner(System.in);
+	boolean win = false; //for end
     //Draw the window border
 
 
@@ -288,7 +300,7 @@ public class Game{
 
       //example debug statment
       
-
+	  if(input.split(" ").length == 2 || !partyTurn){
       //display event based on last turn's input
       if(partyTurn){
         
@@ -396,13 +408,26 @@ public class Game{
 
       //display the updated screen after input has been processed.
       drawScreen(party, enemies);
-
-
+	  }else if(!(input.equals("q") || input.equals("quit"))){
+		  TextBox(27, 2, 78, 2, "incorrect input, please enter in format: action <target index 0-2>");
+		  
+		  input = "q";
+	  }
+	 
+	 if(!checkLiving(party)){
+		 win = false;
+	 }else if(!checkLiving(enemies)){
+		 win = true;
+	 }
+		
     }//end of main game loop
 
 
     //After quit reset things:
-    drawResult(party, true);
+	if(!(input.equals("q") || input.equals("quit"))){
+		drawResult(party, win);
+	}
+  
     quit();
   }
 }
