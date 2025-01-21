@@ -1,4 +1,3 @@
-import java.util.*;
 public abstract class Adventurer{
   private int[] statuses = {0, 0, 0}; // paralyzed, buffed, dead
   private String name;
@@ -54,7 +53,8 @@ public abstract class Adventurer{
   */
 
   public void applyDamage(int amount){
-    this.HP -= amount;
+    if (this.HP - amount < 0) this.HP = 0;
+    else this.HP -= amount;
   }
 
   //You did it wrong if this happens.
@@ -113,7 +113,8 @@ public abstract class Adventurer{
 
   //Set Methods
   public void setHP(int health){
-    this.HP = health;
+    if (this.HP + health > getmaxHP()) this.HP = getmaxHP();
+    else this.HP = health;
   }
 
   public void setName(String s){

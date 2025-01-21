@@ -45,7 +45,7 @@ Max Special: 10
   - Special: The exchange student flaunts his bank account, rendering the opponent immobile for the next 1-2 rounds.
 	- Consumes 1 daddy’s money.
 - Ally Support
-  - Description: The exchange student generously shares his money with everyone, boosting their special by 1 and health by 3.
+  - Description: The exchange student generously shares his money with ally, boosting their special by 1 and health by 3.
   - Consumes 2 daddy’s money.
 - Self Support
   - Description: The exchange student receives his weekly $10,000 deposit from his dad, boosting his health by 4.
@@ -73,9 +73,9 @@ Max Special: 15
   - Consumes 2 work experience
 
 ### Boss: Senior SWE
-Base Health:  25-27
+Base Health:  48-50
 
-Max Health: 30
+Max Health: 55
 
 Base Special: 14
 

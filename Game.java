@@ -1,6 +1,5 @@
 import java.util.*;
 
-import javax.swing.event.SwingPropertyChangeSupport;
 public class Game{  
   private static final int WIDTH = 80;
   private static final int HEIGHT = 30;
@@ -62,7 +61,12 @@ public class Game{
 
     int originalR = row, originalC = col, length = text.length();
     int blank = width * height - text.length();
-    if (blank < 0 && text.indexOf("\u001b[") == -1) {
+    if (text.indexOf("\u001b[") != -1) {
+      drawText(text, row, col);
+      return;
+    }
+
+    if (blank < 0) {
       throw new IllegalArgumentException(Text.colorize("\"" + text + "\"" + " with length " + text.length() + " is too long for width: " + width + " and height: " + height, Text.BOLD, Text.RED + Text.BRIGHT, Text.UNDERLINE));
     }
     
@@ -131,28 +135,29 @@ public class Game{
   * ***THIS ROW INTENTIONALLY LEFT BLANK***
   */
   public static void drawParty(ArrayList<Adventurer> party,int startRow, int startCol){
-    int width = 12;
+    int width = 12;//
+    // the health was getting cut before size < 3
 
-    
+    TextBox(startRow, startCol, 38, 4, " "); // what if we move this inside and erase only width and 4
     for (int a = 0; a < party.size(); a++) {
       Adventurer current = party.get(a);
       TextBox(startRow, startCol, width, 1, current.toString());
       TextBox(startRow+1, startCol, width, 1, "HP:" + colorByPercent(current.getHP(), current.getmaxHP()));
       TextBox(startRow+2, startCol, width, 1, current.getSpecialName() + ": " + current.getSpecial());
       
-      String status = "";
+      // String status = "";
     
-      if (current.isDead()) {
-        status += Text.colorize("Dead", Text.RED, Text.BOLD);
-      }
-      else {
-        if (current.isParalyzed()) {
-          status += Text.colorize("para: " + current.getParalyzedD(), Text.YELLOW);
-        }
-        if (current.isBuffed()) {
-          status += Text.colorize(", buff: " + current.getBuffedD(), Text.BLUE);
-        }
-      }
+      // if (current.isDead()) {
+      //   status += Text.colorize("Dead", Text.RED, Text.BOLD);
+      // }
+      // else {
+      //   if (current.isParalyzed()) {
+      //     status += Text.colorize("para: " + current.getParalyzedD(), Text.YELLOW);
+      //   }
+      //   if (current.isBuffed()) {
+      //     status += Text.colorize(", buff: " + current.getBuffedD(), Text.BLUE);
+      //   }
+      // }
      
       //TextBox(startRow+3, startCol, 7, 1, status);
      // Text.go(31, 2);
@@ -187,7 +192,6 @@ public class Game{
   //Do not write over the blank areas where text will appear.
   //Place the cursor at the place where the user will by typing their input at the end of this method.
   public static void drawScreen(ArrayList<Adventurer> party, ArrayList<Adventurer> enemies){
-
     drawBackground();
     // drawBackground()
 
@@ -236,19 +240,39 @@ public class Game{
     if (win) System.out.println(WIN);
     else System.out.println(LOSE);
 
-    drawParty(party, 15, 1);
+    System.exit(0);
   }
 
+
   public static boolean checkDead(ArrayList<Adventurer> list){
-	  boolean dead = true;
+	  boolean dead = true; //accidentally changed this before mb it should be fixed
 	  for(int i = 0; i < list.size(); i++){
-		  if(list.get(i).getHP() > 0){
+		  if(!list.get(i).isDead()){
 			  dead = false;
 		  }
-		  
 	  }
 	  return dead;
   }
+
+  //sets as dead if dead
+  public static void setIfDead(ArrayList<Adventurer> list){
+    for(int i = 0; i < list.size(); i++){
+      if(list.get(i).getHP() <= 0){
+        list.get(i).setDead();
+      }
+    }
+  }
+
+  public static ArrayList<Adventurer> removeDead(ArrayList<Adventurer> adventurers) {
+    for (int i = 0; i < adventurers.size(); i++) {
+      if (adventurers.get(i).isDead()) {
+        adventurers.remove(i);
+        i--;
+      }
+    }//remove so i -- when remove runs? wait i remember something abt this k said it in class one time that was either really good or just meh
+    return adventurers;
+  } // why tf did the health go from 0 to max when die alr what now why is stillll duppepeeeee
+  // ok we try
  
   public static void quit(){
     Text.reset();
@@ -273,7 +297,7 @@ public class Game{
     int num = (int)(Math.random()*3) + 1; // 1 to 3
 
     ArrayList<Adventurer> party = new ArrayList<Adventurer>();
-    ArrayList<Adventurer>enemies = new ArrayList<Adventurer>();
+    ArrayList<Adventurer> enemies = new ArrayList<Adventurer>();
 
     
 
@@ -357,6 +381,7 @@ public class Game{
           target = Integer.parseInt(input.substring(input.length() - 1));
         }
 
+        whichPlayer %= party.size();
         Adventurer current = party.get(whichPlayer);
         String message = "";
 
@@ -439,49 +464,40 @@ public class Game{
         //Enemy action choices go here!
         /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
         //YOUR CODE HERE
+        whichOpponent %= enemies.size();
         Adventurer currentOpp = enemies.get(whichOpponent);
 
-        if (currentOpp.isDead()) {
-          whichOpponent++;
-          whichOpponent %= enemies.size();
-        }
-        else {
-          int attack = (int) (Math.random() * 4);
-          int which = (int) (Math.random() * party.size());
-          //party check for isdead
-          if(party.get(which).isDead()){
-            which++;
-            which %= party.size();
+
+        int attack = (int) (Math.random() * 4);
+        int which = (int) (Math.random() * party.size());
+        
+        
+        String message;
+        if(attack == 0){
+          message = currentOpp.attack(party.get(which));
+        }else if(attack == 1){ // try running stuff
+          message = currentOpp.specialAttack(party.get(which)); // ???
+        }else if(attack == 2){ // we could add it to the initial if partyTurn if  isDead is who is dead
+          message = currentOpp.support();
+        }else{
+          int rand = (int) (Math.random()*enemies.size());
+          Adventurer supportWho = enemies.get(rand);
+          while (supportWho.isDead()) {
+            rand = (int) (Math.random()*enemies.size());
+            supportWho = enemies.get(rand);
           }
-          
-          
-          String message;
-          if(attack == 0){
-            message = currentOpp.attack(party.get(which));
-          }else if(attack == 1){
-            message = currentOpp.specialAttack(party.get(which)); // ???
-          }else if(attack == 2){ // we could add it to the initial if partyTurn if  isDead is who is dead
-            message = currentOpp.support();
-          }else{
-            int rand = (int) (Math.random()*enemies.size());
-            Adventurer supportWho = enemies.get(rand);
-            while (supportWho.isDead()) {
-              rand = (int) (Math.random()*enemies.size());
-              supportWho = enemies.get(rand);
-            }
-            message = currentOpp.support(supportWho);
-          }
-          TextBox(2, 41, 39, 5, message);
-          /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
-
-
-          //Decide where to draw the following prompt:
-          String prompt = "press enter to see next turn";
-          TextBox(26, 2, 78, 2, prompt);
-
-          enemyMoves++;
-          whichOpponent++;
+          message = currentOpp.support(supportWho);
         }
+        TextBox(2, 41, 39, 5, message);
+        /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+
+
+        //Decide where to draw the following prompt:
+        String prompt = "press enter to see next turn";
+        TextBox(26, 2, 78, 2, prompt);
+
+        enemyMoves++;
+        whichOpponent++;
 
       }//end of one enemy.
 
@@ -498,20 +514,29 @@ public class Game{
       }
 
       //display the updated screen after input has been processed.
+      setIfDead(party);
+      setIfDead(enemies);
+      
 
-      if(checkDead(party)){
-        drawResult(party, false);
-      }
-      if(checkDead(enemies)){
-        drawResult(party, true);
-      }
+      if(checkDead(party)) drawResult(party, false);
+      
+      if(checkDead(enemies)) drawResult(party, true);
 
-      for (int i = 0; i < party.size(); i++) {
-        if (party.get(i).isDead()) {
-          party.remove(i);
-        }
-      }
+      enemies = removeDead(enemies);
+      party = removeDead(party);
+      TextBox(31, 1, 30, 1, " ");
+      Text.go(31,1);
 
+
+      for (Adventurer a : party) {
+        System.out.print(a + ", ");
+      }
+      System.out.println();
+      for (Adventurer a : enemies) {
+        System.out.print(a + ", ");
+      }
+      TextBox(32, 1, 30, 1, party.size() +" ; "+ enemies.size());
+ // that didn't count cuz only 1 enemy
       drawScreen(party, enemies);
   
     

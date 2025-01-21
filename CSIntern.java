@@ -45,7 +45,7 @@ public class CSIntern extends Adventurer {
 		other.applyDamage(damage);
 		restoreSpecial(1); // passively restore 1 special
 		return this + " attacked "+ other + " and dealt "+ damage +
-		" points of damage. They then pick up the " + this.restoreSpecial(1) + " money " + other + " dropped";
+		" points of damage. They then gain " + this.restoreSpecial(1) + " expr from the attack";
 	  }
 
       //4 points of damage. Consumes 2 work experience
@@ -73,6 +73,7 @@ public class CSIntern extends Adventurer {
 
       // restores 1 special and 2 health for 2 work experience
       public String support(Adventurer other){
+		
 		if(this.getSpecial() > 1){
 			int hp = 2;
 			if(other.getHP() + hp > other.getmaxHP()){

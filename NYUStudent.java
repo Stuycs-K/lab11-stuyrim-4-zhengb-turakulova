@@ -74,7 +74,7 @@ public class NYUStudent extends Adventurer{
       }
       other.setHP(other.getHP() + hp);
       this.setSpecial(this.getSpecial() - 2);
-    return this + " generously shares their money with everyone, boosting their special by  "+ (other.restoreSpecial(1)) 
+    return this + " generously shares their money with "+ other +", boosting their special by  "+ (other.restoreSpecial(1)) 
 	+ " and HP by " + hp;
     }else{
       return this + " needs at least 2 " + this.getSpecialName() + " to use ally support";
